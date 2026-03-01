@@ -1,100 +1,73 @@
-# forum-frontend
+# React + TypeScript + Vite
 
-## Tech Stack & Approach
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-### Framework & Language
-- React (with Vite for fast development)
-- TypeScript
-- Vite
+Currently, two official plugins are available:
 
-### State Management
-- React Context API: For SPA navigation, nested routes and route guards.
-- Consider Redux for complex state or as a learning opportunity
-- Best Practice: Keep State as local as possible; lift state only when absolutely necessary.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### Routing
-- react-router-dom for client-side routing
-- Planned Routes:
-    - / (Home/Forum Index)
-    -/login, /register
-    - /categories, /categories/:id
-    - /threads/:id
-    - /posts/:id
-    - /user/:id
-    - /admin (if applicable)
-    - 404 Handling: Custom not-found page.
+## React Compiler
 
-### API Integration
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- Options under consideration: 
-    - fetch (native, minimal dependencies)
-    - axios (feature-rich, interceptors)
-    - react-query or SWR (data fetching, caching, auto-refetch)
-Will discuss and finalize based on project needs.
-(Planned Features:
-- Centralized API utility for requests
-- Error handling and user feedback
-- Token management for authenticated requests
-)
+## Expanding the ESLint configuration
 
-### Authentication
-- Integration: connects with backend auth endpoints
-- Features:
-    - Login, registration, logout
-    - JWT or session token storage (localStorage or cookies)
-    - Protected routes (redirect unauthenticated users)
-    - User context for current user info
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### Testing
-- Vitest for unit and integration testing
-- Testing Focus:
-    - Components (UI, logic)
-    - API utilities (mocking backend)
-    - Routing and protected routes
-    - End-to-end (E2E) tests (potentially with Playwright)
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### Styling
-Styling Options:
-- CSS Modules (scoped styles)
-- SCSS (nesting, variables)
-- styled-components (CSS-in-JS, dynamic styling)
-Approach:
-- Organized folder structure for styles
-- Theming support for future extensibility
-- Accessibility and responsive design
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-### UI/UX Design
-- Inspired by classic forums (e.g., Giant in the Playground: https://forums.giantitp.com/)
-Tools: 
-- Figma for wireframes and prototypes
-Design Goals:
-- Intuitive navigation
-- Readable, accessible layouts
-- Mobile responsiveness
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
 
-### Component Structure
-Planned Components:
-- Layout: Header, Footer, Sidebar, MainContent
-- Forum: CategoryList, ThreadList, PostList, PostEditor
-- User: UserProfile, UserMenu, AuthForms
-- Admin: AdminPanel, UserManagement
-- Shared: Button, Modal, Loader, Alert, Pagination
-Approach:
-- Atomic design principles (atoms, molecules, organisms)
-- Reusability and composability
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## NEXT STEPS
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-1. UI/UX Wireframes: Sketch out the main pages and flows in Figma. This will clarify your component needs and user journeys.
-
-2. API Contract Review: Document the expected data structures and endpoints between frontend and backend. This helps avoid integration surprises.
-
-3. Component Breakdown: Create a detailed list or diagram of all components, their props, and relationships (atomic design).
-
-4. Routing Map: Draft a visual map of your planned routes and how they connect, including protected routes and error handling.
-
-5. Authentication Flow: Plan the login, registration, token storage, and protected route logic in detail.
-
-6. Styling Architecture: Decide on your CSS/scoping approach and folder structure for styles.
-
-7. Feasibility Checks: Identify any technical unknowns (e.g., SSR, accessibility, mobile support) and do small proofs-of-concept if needed.
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
