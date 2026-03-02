@@ -1,0 +1,13 @@
+// Usage: @include respond-min(769px) { ... }
+@mixin respond-min($width) {
+  @media (min-width: $width) {
+    @content;
+  }
+}
+
+// Usage: @include respond-max(768px) { ... }
+@mixin respond-max($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}

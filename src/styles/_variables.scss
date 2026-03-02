@@ -1,0 +1,24 @@
+// Backgrounds
+$color-bg-main: #fff; // Main content background (white)
+$color-bg-header-footer: #333; // Header/footer background
+
+// Text
+$color-text-main: #222; // Main content text (dark)
+$color-text-header-footer: #fff; // Header/footer text (white)
+
+// Navbar
+$color-navbar-bg: $color-bg-header-footer;
+$color-navbar-hover: #555;
+$color-navbar-active: #444;
+
+// Links & Accent
+$color-link: #4fc3f7;
+$color-link-hover: #0288d1;
+$color-accent: #4fc266;
+
+// Fonts
+$font-family-base: sans-serif;
+
+// Layout
+$max-width: 1200px;
+$border-radius: 4px;

@@ -1,9 +1,10 @@
 import React from 'react';
+import "./Footer.scss";
 
 const Footer: React.FC = () => {
     return (
-        <footer>
-            <h1>Forum</h1>
+        <footer className='footer'>
+            <p>&copy; {new Date().getFullYear()} Bradley Hill &mdash; Forum Project</p>
         </footer>
     );
 };

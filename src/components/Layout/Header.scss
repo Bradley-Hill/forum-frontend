@@ -1,0 +1,109 @@
+@use "../../styles/_variables" as vars;
+@use "../../styles/_mixins" as mixins;
+
+.navbar {
+  background-color: vars.$color-navbar-bg;
+  color: vars.$color-text-header-footer;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap;
+
+  .hamburger {
+    display: block;
+    background: none;
+    border: none;
+    color: vars.$color-text-header-footer;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+
+    &:hover,
+    &:focus {
+      transform: scale(1.1);
+      outline: 2px solid vars.$color-link;
+    }
+  }
+
+  .navbarList {
+    list-style: none;
+    display: none;
+    position: absolute;
+    top: calc(100%);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background-color: vars.$color-navbar-bg;
+    border-radius: vars.$border-radius;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    animation: slideUp 0.3s ease forwards;
+
+    &.open {
+      display: flex;
+      animation: slideDown 0.3s ease forwards;
+    }
+  }
+
+  .navbarItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navLink {
+    display: block;
+    width: 100%;
+    color: vars.$color-text-header-footer;
+    text-decoration: none;
+    text-align: left;
+    padding: 1rem;
+    border-radius: 0;
+    border-bottom: 1px solid vars.$color-navbar-active;
+    transition: background-color 0.3s;
+
+    &:hover,
+    &:focus {
+      background-color: vars.$color-navbar-hover;
+    }
+
+    &:active {
+      background-color: vars.$color-navbar-active;
+    }
+  }
+
+  @include mixins.respond-min(769px) {
+    padding: 1rem;
+
+    .hamburger {
+      display: none;
+    }
+
+    .navbarList {
+      display: flex !important;
+      position: static;
+      flex-direction: row;
+      gap: 1rem;
+      background: none;
+      box-shadow: none;
+      animation: none;
+
+      .navbarItem {
+        width: auto;
+
+        .navLink {
+          width: auto;
+          text-align: center;
+          padding: 0.5rem 1rem;
+          border-radius: vars.$border-radius;
+          border-bottom: none;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}

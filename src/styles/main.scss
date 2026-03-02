@@ -1,0 +1,26 @@
+@use '_variables' as vars;
+@use '_mixins' as mixins;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: vars.$font-family-base;
+  color: vars.$color-text-main;
+  line-height: 1.5;
+}
+
+a {
+  color: vars.$color-link;
+  &:hover {
+    color: vars.$color-link-hover;
+  }
+}
+
+button {
+  background: vars.$color-accent;
+  color: vars.$color-text-header-footer;
+}
