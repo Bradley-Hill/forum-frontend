@@ -15,10 +15,11 @@ $color-navbar-active: #444;
 $color-link: #4fc3f7;
 $color-link-hover: #0288d1;
 $color-accent: #4fc266;
+$color-focus-outline: $color-link;
 
 // Fonts
 $font-family-base: sans-serif;
 
 // Layout
 $max-width: 1200px;
-$border-radius: 4px;
+$border-radius: 0.25rem;

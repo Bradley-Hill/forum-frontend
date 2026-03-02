@@ -1,0 +1,22 @@
+@use '../../styles/variables' as vars;
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 1000;
+  background: vars.$color-navbar-bg;
+  color: vars.$color-text-header-footer;
+  padding: 0.5rem 1rem;
+  border-radius: vars.$border-radius;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  outline: 2px solid vars.$color-focus-outline;
+}
