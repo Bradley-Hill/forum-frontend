@@ -104,12 +104,112 @@ export interface categoryThreadsResponse {
   };
 }
 
-export interface threadsApiRequest{}
+export interface threadsApiResponse {
+  data: {
+    thread: {
+      id: string;
+      title: string;
+      is_sticky: boolean;
+      is_locked: boolean;
+      created_at: string;
+      updated_at: string;
+      author: { id: string; username: string };
+      reply_count: number;
+      category_id: string;
+    };
+    posts: [
+      {
+        id: string;
+        thread_id: string;
+        author: { id: string; username: string };
+        content: string;
+        created_at: string;
+        updated_at: string;
+      },
+    ];
+    pagination: {
+      page: number;
+      pageSize: number;
+      totalPosts: number;
+      totalPages: number;
+    };
+  };
+}
 
-export interface threadsApiResponse {}
+export interface createThreadRequest {
+  category_id: string;
+  title: string;
+  content: string;
+}
+
+export interface createThreadResponse {
+  data: {
+    id: string;
+    category_id: string;
+    title: string;
+    is_sticky: boolean;
+    is_locked: boolean;
+    created_at: string;
+    updated_at: string;
+    author: { id: string; username: string };
+    reply_count: number;
+  };
+}
+
+export interface threadUpdateRequest {
+  title: string;
+}
+
+export interface threadUpdateResponse {
+  data: {
+    id: string;
+    category_id: string;
+    title: string;
+    is_sticky: boolean;
+    is_locked: boolean;
+    created_at: string;
+    updated_at: string;
+    author: { id: string; username: string };
+    reply_count: number;
+  };
+}
+
+export interface threadLockUpdateRequest {
+  is_locked: boolean;
+}
+
+export interface threadLockUpdateResponse {
+  data: Thread;
+}
+
+export interface threadStickyUpdateRequest {
+  is_sticky: boolean;
+}
+
+export interface threadStickyUpdateResponse {
+  data: Thread;
+}
+
+export interface threadDeleteRequest {
+  
+}
+
+export interface threadDeleteResponse {}
 
 export interface User {
   id: string;
   username: string;
   role: "user" | "admin";
+}
+
+export interface Thread {
+  id: string;
+  title: string;
+  is_sticky: boolean;
+  is_locked: boolean;
+  created_at: string;
+  updated_at: string;
+  author: { id: string; username: string };
+  reply_count: number;
+  category_id: string;
 }
