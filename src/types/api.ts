@@ -82,57 +82,16 @@ export interface categoryThreadsResponse {
       slug: string;
       name: string;
     };
-    threads: [
-      {
-        id: string;
-        title: string;
-        is_sticky: boolean;
-        is_locked: boolean;
-        created_at: string;
-        updated_at: string;
-        author: { id: string; username: string };
-        reply_count: number;
-        category_id: string;
-      },
-    ];
-    pagination: {
-      page: number;
-      pageSize: number;
-      totalThreads: number;
-      totalPages: number;
-    };
+    threads: [Thread];
+    pagination: Pagination;
   };
 }
 
 export interface threadsApiResponse {
   data: {
-    thread: {
-      id: string;
-      title: string;
-      is_sticky: boolean;
-      is_locked: boolean;
-      created_at: string;
-      updated_at: string;
-      author: { id: string; username: string };
-      reply_count: number;
-      category_id: string;
-    };
-    posts: [
-      {
-        id: string;
-        thread_id: string;
-        author: { id: string; username: string };
-        content: string;
-        created_at: string;
-        updated_at: string;
-      },
-    ];
-    pagination: {
-      page: number;
-      pageSize: number;
-      totalPosts: number;
-      totalPages: number;
-    };
+    thread: Thread;
+    posts: [Post];
+    pagination: Pagination;
   };
 }
 
@@ -190,16 +149,64 @@ export interface threadStickyUpdateResponse {
   data: Thread;
 }
 
-export interface threadDeleteRequest {
-  
+export interface postCreateRequest {
+  thread_id: string;
+  content: string;
 }
 
-export interface threadDeleteResponse {}
+export interface postCreateResponse {
+  data: {
+    id: string;
+    thread_id: string;
+    author: { id: string; username: string };
+    content: string;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface postUpdateRequest {
+  content: string;
+}
+
+export interface postUpdateResponse {
+  data: {
+    id: string;
+    thread_id: string;
+    author: { id: string; username: string };
+    content: string;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface getUserResponse {
+  data: {
+    id: string;
+    username: string;
+    role: "member" | "admin";
+    created_at: string;
+  };
+}
+
+export interface updateUserRequest {
+  email?: string;
+  currentPassword?: string;
+  newPassword?: string;
+}
+
+export interface updateUserResponse {
+  data: {
+    id: string;
+    username: string;
+    email: string;
+  };
+}
 
 export interface User {
   id: string;
   username: string;
-  role: "user" | "admin";
+  role: "member" | "admin";
 }
 
 export interface Thread {
@@ -212,4 +219,23 @@ export interface Thread {
   author: { id: string; username: string };
   reply_count: number;
   category_id: string;
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  is_sticky: boolean;
+  is_locked: boolean;
+  created_at: string;
+  updated_at: string;
+  author: { id: string; username: string };
+  reply_count: number;
+  category_id: string;
+}
+
+export interface Pagination {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
 }

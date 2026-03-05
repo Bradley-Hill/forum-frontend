@@ -578,6 +578,18 @@ This document defines the contract between frontend and backend for all API endp
 
 ---
 
+### DELETE `/api/users/me` (auth required)
+- **Response:**  
+  Success: `204 No Content`  
+  Error:  
+  ```json
+  {
+    "error": { "message": "string", "code": "string" }
+  }
+  ```
+
+---
+
 ## **General Notes**
 
 - All error responses:  
