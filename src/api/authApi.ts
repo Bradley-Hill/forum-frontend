@@ -59,7 +59,7 @@ export async function loginApi(
 
 export async function refreshTokenApi(
   refreshToken: string,
-): Promise<RefreshResponse> {
+): Promise<RefreshResponse['data']> {
   const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -67,7 +67,7 @@ export async function refreshTokenApi(
   });
 
   const json = (await response.json()) as {
-    data?: RefreshResponse;
+    data?: RefreshResponse['data'];
     error?: ErrorResponse;
   };
 
@@ -75,7 +75,7 @@ export async function refreshTokenApi(
     throw new Error(json.error?.message || "Token refresh failed");
   }
 
-  return json.data as RefreshResponse;
+  return json.data as RefreshResponse['data'];
 }
 
 export async function logoutApi(refreshToken: string): Promise<LogoutResponse> {

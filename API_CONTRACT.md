@@ -525,6 +525,29 @@ This document defines the contract between frontend and backend for all API endp
 
 ## **User Endpoints**
 
+### GET `/api/users/me` (auth required)
+- **Response:**  
+  Success:  
+  ```json
+  {
+    "data": {
+      "id": "uuid",
+      "username": "string",
+      "email": "string",
+      "role": "member" | "admin",
+      "created_at": "ISODate"
+    }
+  }
+  ```
+  Error:  
+  ```json
+  {
+    "error": { "message": "string", "code": "string" }
+  }
+  ```
+
+---
+
 ### GET `/api/users/:username`
 - **Response:**  
   Success:  

@@ -180,6 +180,16 @@ export interface postUpdateResponse {
   };
 }
 
+export interface getMeResponse {
+  data: {
+    id: string;
+    username: string;
+    email: string;
+    role: "member" | "admin";
+    created_at: string;
+  };
+}
+
 export interface getUserResponse {
   data: {
     id: string;
@@ -206,6 +216,7 @@ export interface updateUserResponse {
 export interface User {
   id: string;
   username: string;
+  email: string;
   role: "member" | "admin";
 }
 

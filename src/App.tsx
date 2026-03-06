@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Layout/Header.tsx";
-import Footer from "./components/Layout/Footer.tsx";
 import Home from "./routes/Home.tsx";
 import Login from "./routes/Login.tsx";
 import Register from "./routes/Register.tsx";
