@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { useAuth } from "../../hooks/useAuth";
 import "./Header.scss";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <header className="navbar">
@@ -48,56 +50,66 @@ const Header: React.FC = () => {
               Forum
             </a>
           </li>
-          <li className="navbarItem">
-            <a
-              className="navLink"
-              href="/profile"
-              onClick={() => setIsOpen(false)}
-              aria-label="Go to Profile"
-            >
-              Profile
-            </a>
-          </li>
-          <li className="navbarItem">
-            <a
-              className="navLink"
-              href="/login"
-              onClick={() => setIsOpen(false)}
-              aria-label="Go to Login"
-            >
-              Login
-            </a>
-          </li>
-          <li className="navbarItem">
-            <a
-              className="navLink"
-              href="/register"
-              onClick={() => setIsOpen(false)}
-              aria-label="Go to Register"
-            >
-              Register
-            </a>
-          </li>
-          <li className="navbarItem">
-            <a
-              className="navLink"
-              href="/logout"
-              onClick={() => setIsOpen(false)}
-              aria-label="Go to Logout"
-            >
-              Logout
-            </a>
-          </li>
-          <li className="navbarItem">
-            <a
-              className="navLink"
-              href="/admin"
-              onClick={() => setIsOpen(false)}
-              aria-label="Go to Admin"
-            >
-              Admin
-            </a>
-          </li>
+          {isAuthenticated && (
+            <>
+              <li className="navbarItem">
+                <a
+                  className="navLink"
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Go to Profile"
+                >
+                  Profile
+                </a>
+              </li>
+              {user?.role === "admin" && (
+                <li className="navbarItem">
+                  <a
+                    className="navLink"
+                    href="/admin"
+                    onClick={() => setIsOpen(false)}
+                    aria-label="Go to Admin"
+                  >
+                    Admin
+                  </a>
+                </li>
+              )}
+              <li className="navbarItem">
+                <a
+                  className="navLink"
+                  href="/logout"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Go to Logout"
+                >
+                  Logout
+                </a>
+              </li>
+            </>
+          )}
+          {!isAuthenticated && (
+            <>
+              <li className="navbarItem">
+                <a
+                  className="navLink"
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Go to Login"
+                >
+                  Login
+                </a>
+              </li>
+              <li className="navbarItem">
+                <a
+                  className="navLink"
+                  href="/register"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Go to Register"
+                >
+                  Register
+                </a>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>
