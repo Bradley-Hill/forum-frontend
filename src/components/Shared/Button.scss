@@ -66,10 +66,10 @@
 }
 
 .btn--danger {
-  background-color: vars.$color-btn-danger;
+  background-color: vars.$color-error;
   color: vars.$color-text-header-footer;
 
   &:hover:not(:disabled) {
-    background-color: vars.$color-btn-danger-hover;
+    background-color: darken(vars.$color-error, 10%);
   }
 }
