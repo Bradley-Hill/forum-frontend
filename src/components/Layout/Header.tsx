@@ -98,16 +98,6 @@ const Header: React.FC = () => {
                   Login
                 </a>
               </li>
-              <li className="navbarItem">
-                <a
-                  className="navLink"
-                  href="/register"
-                  onClick={() => setIsOpen(false)}
-                  aria-label="Go to Register"
-                >
-                  Register
-                </a>
-              </li>
             </>
           )}
         </ul>
