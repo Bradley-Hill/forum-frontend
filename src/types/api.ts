@@ -87,6 +87,15 @@ export interface categoryThreadsResponse {
   };
 }
 
+export interface categoriesListResponse {
+  data: {
+    id: string;
+    slug: string;
+    name: string;
+    description: string;
+  }[];
+}
+
 export interface threadsApiResponse {
   data: {
     thread: Thread;

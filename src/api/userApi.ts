@@ -6,7 +6,8 @@ import type {
   ErrorResponse,
 } from "../types/api";
 
-const API_BASE_URL = "https://api.bradley-hill.com/api";
+// const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
+const API_BASE_URL = "http://localhost:3000/api"; // Development
 
 export async function getMeApi(accessToken: string): Promise<getMeResponse['data']> {
   const response = await fetch(`${API_BASE_URL}/users/me`, {

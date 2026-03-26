@@ -1,0 +1,50 @@
+@use '../../styles/variables' as vars;
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  background-color: vars.$color-bg-main;
+  border: 1px solid vars.$color-border-light;
+  border-radius: vars.$border-radius;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.category-card-header {
+  background-color: #a8d5a8;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid vars.$color-border-light;
+}
+
+.category-card-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: vars.$color-text-main;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: vars.$color-link-hover;
+  }
+
+  &:focus-visible {
+    outline: 2px solid vars.$color-focus-outline;
+    outline-offset: 2px;
+  }
+}
+
+.category-card-description {
+  padding: 0.5rem 1rem;
+  margin: 0;
+  font-size: 0.95rem;
+  color: vars.$color-text-muted;
+  line-height: 1.5;
+}

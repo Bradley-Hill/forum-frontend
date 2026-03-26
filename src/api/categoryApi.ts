@@ -4,10 +4,12 @@ import type {
   categoryUpdateRequest,
   categoryUpdateResponse,
   categoryThreadsResponse,
+  categoriesListResponse,
   ErrorResponse,
 } from "../types/api";
 
-const API_BASE_URL = "https://api.bradley-hill.com/api";
+// const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
+const API_BASE_URL = "http://localhost:3000/api"; // Development
 
 export async function createCategoryApi(
   name: string,
@@ -71,7 +73,7 @@ export async function getCategoryThreadsApi(
   id: string,
   page?: number,
   pageSize?: number,
-): Promise<categoryThreadsResponse> {
+): Promise<categoryThreadsResponse["data"]> {
   const response = await fetch(
     `${API_BASE_URL}/categories/${id}/threads?page=${page}&pageSize=${pageSize}`,
     {
@@ -81,7 +83,7 @@ export async function getCategoryThreadsApi(
   );
 
   const json = (await response.json()) as {
-    data?: categoryThreadsResponse;
+    data?: categoryThreadsResponse["data"];
     error?: ErrorResponse;
   };
 
@@ -89,5 +91,23 @@ export async function getCategoryThreadsApi(
     throw new Error(json.error?.message || "Failed to fetch category threads");
   }
 
-  return json.data as categoryThreadsResponse;
+  return json.data as categoryThreadsResponse["data"];
+}
+
+export async function getCategoriesApi(): Promise<categoriesListResponse> {
+  const response = await fetch(`${API_BASE_URL}/categories`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const json = (await response.json()) as {
+    data?: categoriesListResponse["data"];
+    error?: ErrorResponse;
+  };
+
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to fetch categories");
+  }
+
+  return { data: json.data || [] } as categoriesListResponse;
 }

@@ -11,7 +11,8 @@ import type {
   threadLockUpdateResponse,
 } from "../types/api";
 
-const API_BASE_URL = "https://api.bradley-hill.com/api";
+// const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
+const API_BASE_URL = "http://localhost:3000/api"; // Development
 
 export async function getThreadsApi(
   id: string,
