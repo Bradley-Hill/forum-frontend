@@ -1,48 +1,100 @@
-import type { postCreateRequest,postCreateResponse,ErrorResponse } from "../types/api";
+import type {
+  postCreateRequest,
+  postCreateResponse,
+  ErrorResponse,
+} from "../types/api";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
 
-export async function createPostApi(request: postCreateRequest): Promise<postCreateResponse> {
-  const response = await fetch(`${API_BASE_URL}/posts`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  });
+export async function createPostApi(
+  request: postCreateRequest,
+  csrfToken?: string,
+): Promise<postCreateResponse> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/posts`,
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify(request),
+      credentials: "include",
+    },
+    10000,
+  );
 
+  const json = (await response.json()) as {
+    data?: postCreateResponse;
+    error?: ErrorResponse;
+  };
   if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
+    throw new Error(json.error?.message || "Failed to create post");
   }
 
-  const json = (await response.json()) as { data?: postCreateResponse; error?: ErrorResponse };
   return json.data as postCreateResponse;
 }
 
-export async function updatePostApi(id: string, content: string): Promise<postCreateResponse> {
-  const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content }),
-  });
+export async function updatePostApi(
+  id: string,
+  content: string,
+  csrfToken?: string,
+): Promise<postCreateResponse> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/posts/${id}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ content }),
+      credentials: "include",
+    },
+    10000,
+  );
 
+  const json = (await response.json()) as {
+    data?: postCreateResponse;
+    error?: ErrorResponse;
+  };
   if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
+    throw new Error(json.error?.message || "Failed to update post");
   }
 
-  const json = (await response.json()) as { data?: postCreateResponse; error?: ErrorResponse };
   return json.data as postCreateResponse;
 }
 
-export async function deletePostApi(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+export async function deletePostApi(
+  id: string,
+  csrfToken?: string,
+): Promise<void> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/posts/${id}`,
+    {
+      method: "DELETE",
+      headers,
+      credentials: "include",
+    },
+    10000,
+  );
 
+  const json = (await response.json()) as { error?: ErrorResponse };
   if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
+    throw new Error(json.error?.message || "Failed to delete post");
   }
 }

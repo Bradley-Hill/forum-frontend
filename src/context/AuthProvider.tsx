@@ -1,29 +1,30 @@
-import { useState, useEffect } from 'react';
-import AuthContext from './AuthContext';
-import type { User, updateUserRequest } from '../types/api';
-import { loginApi, logoutApi, registerApi, refreshTokenApi } from '../api/authApi';
-import { getMeApi, updateUserApi, deleteUserApi } from '../api/userApi';
+import { useState, useEffect } from "react";
+import AuthContext from "./AuthContext";
+import type { User, updateUserRequest } from "../types/api";
+import {
+  loginApi,
+  logoutApi,
+  registerApi,
+  refreshTokenApi,
+} from "../api/authApi";
+import { getMeApi, updateUserApi, deleteUserApi } from "../api/userApi";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [csrfToken, setCsrfToken] = useState<string | null>(null);
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await loginApi(email, password);
-      localStorage.setItem('accessToken', newAccessToken);
-      localStorage.setItem('refreshToken', newRefreshToken);
-      setAccessToken(newAccessToken);
-      setRefreshToken(newRefreshToken);
+      const loginResponse = await loginApi(email, password);
+      setCsrfToken(loginResponse.csrfToken);
       setIsAuthenticated(true);
-      const userResponse = await getMeApi(newAccessToken);
+      const userResponse = await getMeApi();
       setUser({
         id: userResponse.id,
         username: userResponse.username,
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         role: userResponse.role,
       });
     } catch (err) {
-      setError((err as Error).message || 'Login failed');
+      setError((err as Error).message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -41,45 +42,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setError(null);
     try {
-      if (refreshToken) {
-        await logoutApi(refreshToken);
-      }
-    } catch (err) {
-      setError((err as Error).message || 'Logout failed');
-    } finally {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      setRefreshToken(null);
-      setAccessToken(null);
+      await logoutApi();
       setUser(null);
       setIsAuthenticated(false);
+      setCsrfToken(null);
+    } catch (err) {
+      setError((err as Error).message || "Logout failed");
+    } finally {
       setLoading(false);
     }
   };
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (
+    username: string,
+    email: string,
+    password: string,
+  ) => {
+    setLoading(true);
     setError(null);
     try {
-      await registerApi(username, email, password);
-      await login(email, password);
+      const registerResponse = await registerApi(username, email, password);
+      setCsrfToken(registerResponse.csrfToken);
+      setIsAuthenticated(true);
+      const userResponse = await getMeApi();
+      setUser({
+        id: userResponse.id,
+        username: userResponse.username,
+        email: userResponse.email,
+        role: userResponse.role,
+      });
     } catch (err) {
-      setError((err as Error).message || 'Registration failed');
+      setError((err as Error).message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   const refresh = async () => {
     try {
-      if (!refreshToken) return;
-      const response = await refreshTokenApi(refreshToken);
-      localStorage.setItem('accessToken', response.accessToken);
-      setAccessToken(response.accessToken);
+      const response = await refreshTokenApi();
+      setCsrfToken(response.csrfToken);
     } catch {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      setAccessToken(null);
-      setRefreshToken(null);
       setUser(null);
       setIsAuthenticated(false);
+      setCsrfToken(null);
     }
   };
 
@@ -87,11 +93,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setError(null);
     try {
-      if (!user) return;
-      const updated = await updateUserApi(user.username, data as updateUserRequest);
+      if (!user || !csrfToken) return;
+      const updated = await updateUserApi(
+        user.username,
+        data as updateUserRequest,
+        csrfToken,
+      );
       setUser({ ...user, ...updated });
     } catch (err) {
-      setError((err as Error).message || 'Update failed');
+      setError((err as Error).message || "Update failed");
     } finally {
       setLoading(false);
     }
@@ -101,15 +111,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setError(null);
     try {
-      await deleteUserApi();
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      setRefreshToken(null);
-      setAccessToken(null);
+      if (!csrfToken) return;
+      await deleteUserApi(csrfToken);
       setUser(null);
       setIsAuthenticated(false);
+      setCsrfToken(null);
     } catch (err) {
-      setError((err as Error).message || 'Delete failed');
+      setError((err as Error).message || "Delete failed");
     } finally {
       setLoading(false);
     }
@@ -118,38 +126,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        const storedAccessToken = localStorage.getItem('accessToken');
-        const storedRefreshToken = localStorage.getItem('refreshToken');
-        if (!storedAccessToken || !storedRefreshToken) return;
-        setAccessToken(storedAccessToken);
-        setRefreshToken(storedRefreshToken);
-        try {
-          const userResponse = await getMeApi(storedAccessToken);
-          setUser({
-            id: userResponse.id,
-            username: userResponse.username,
-            email: userResponse.email,
-            role: userResponse.role,
-          });
-          setIsAuthenticated(true);
-        } catch {
-          try {
-            const response = await refreshTokenApi(storedRefreshToken);
-            localStorage.setItem('accessToken', response.accessToken);
-            setAccessToken(response.accessToken);
-            const userResponse = await getMeApi(response.accessToken);
-            setUser({
-              id: userResponse.id,
-              username: userResponse.username,
-              email: userResponse.email,
-              role: userResponse.role,
-            });
-            setIsAuthenticated(true);
-          } catch {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-          }
-        }
+        const userResponse = await getMeApi();
+        setUser({
+          id: userResponse.id,
+          username: userResponse.username,
+          email: userResponse.email,
+          role: userResponse.role,
+        });
+        setIsAuthenticated(true);
+      } catch {
+        setIsAuthenticated(false);
       } finally {
         setIsInitialized(true);
       }
@@ -163,8 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         isAuthenticated,
         user,
-        accessToken,
-        refreshToken,
+        csrfToken,
         loading,
         error,
         isInitialized,
@@ -181,5 +166,3 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
-
-

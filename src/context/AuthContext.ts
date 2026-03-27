@@ -5,8 +5,7 @@ import type { User } from '../types/api';
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: null,
-  accessToken: null,
-  refreshToken: null,
+  csrfToken: null,
   loading: false,
   error: null,
   isInitialized: false,

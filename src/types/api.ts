@@ -9,8 +9,8 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  message: string;
+  csrfToken: string;
 }
 
 export interface RegisterRequest {
@@ -20,26 +20,20 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse {
-  data: {
-    id: string;
-    username: string;
-    email: string;
-  };
+  message: string;
+  csrfToken: string;
 }
 
-export interface RefreshRequest {
-  refreshToken: string;
-}
+export interface RefreshRequest {}
 
 export interface RefreshResponse {
   data: {
     accessToken: string;
+    csrfToken: string;
   };
 }
 
-export interface LogoutRequest {
-  refreshToken: string;
-}
+export interface LogoutRequest {}
 
 export interface LogoutResponse {
   data: {

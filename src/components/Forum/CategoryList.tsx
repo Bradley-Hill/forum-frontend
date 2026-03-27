@@ -19,12 +19,8 @@ const CategoryList: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await getCategoriesApi();
-        setCategories(response.data);
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Failed to load categories";
-        setError(errorMessage);
+          const categories = await getCategoriesApi();
+          setCategories(categories);
       } finally {
         setLoading(false);
       }
@@ -37,8 +33,8 @@ const CategoryList: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await getCategoriesApi();
-      setCategories(response.data);
+      const categories = await getCategoriesApi();
+      setCategories(categories);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to load categories";

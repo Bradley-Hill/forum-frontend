@@ -7,6 +7,7 @@ import type {
   categoriesListResponse,
   ErrorResponse,
 } from "../types/api";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
@@ -14,12 +15,18 @@ const API_BASE_URL = "http://localhost:3000/api"; // Development
 export async function createCategoryApi(
   name: string,
   description: string,
+  csrfToken?: string,
 ): Promise<categoryResponse> {
-  const response = await fetch(`${API_BASE_URL}/categories`, {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(`${API_BASE_URL}/categories`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ name, description } as categoryRequest),
-  });
+    credentials: "include",
+  }, 10000);
 
   const json = (await response.json()) as {
     data?: categoryResponse;
@@ -37,12 +44,18 @@ export async function updateCategoryApi(
   id: string,
   name?: string,
   description?: string,
+  csrfToken?: string,
 ): Promise<categoryUpdateResponse> {
-  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(`${API_BASE_URL}/categories/${id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify({ name, description } as categoryUpdateRequest),
-  });
+    credentials: "include",
+  }, 10000);
 
   const json = (await response.json()) as {
     data?: categoryUpdateResponse;
@@ -56,11 +69,16 @@ export async function updateCategoryApi(
   return json.data as categoryUpdateResponse;
 }
 
-export async function deleteCategoryApi(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+export async function deleteCategoryApi(id: string, csrfToken?: string): Promise<void> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(`${API_BASE_URL}/categories/${id}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+    headers,
+    credentials: "include",
+  }, 10000);
 
   if (!response.ok) {
     const json = (await response.json()) as { error?: ErrorResponse };
@@ -74,12 +92,14 @@ export async function getCategoryThreadsApi(
   page?: number,
   pageSize?: number,
 ): Promise<categoryThreadsResponse["data"]> {
-  const response = await fetch(
+  const response = await fetchWithTimeout(
     `${API_BASE_URL}/categories/${id}/threads?page=${page}&pageSize=${pageSize}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
     },
+    10000
   );
 
   const json = (await response.json()) as {
@@ -94,11 +114,12 @@ export async function getCategoryThreadsApi(
   return json.data as categoryThreadsResponse["data"];
 }
 
-export async function getCategoriesApi(): Promise<categoriesListResponse> {
-  const response = await fetch(`${API_BASE_URL}/categories`, {
+export async function getCategoriesApi(): Promise<categoriesListResponse['data']> {
+  const response = await fetchWithTimeout(`${API_BASE_URL}/categories`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-  });
+    credentials: "include",
+  }, 10000);
 
   const json = (await response.json()) as {
     data?: categoriesListResponse["data"];
@@ -109,5 +130,5 @@ export async function getCategoriesApi(): Promise<categoriesListResponse> {
     throw new Error(json.error?.message || "Failed to fetch categories");
   }
 
-  return { data: json.data || [] } as categoriesListResponse;
+  return json.data as categoriesListResponse["data"];
 }

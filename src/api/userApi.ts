@@ -5,73 +5,104 @@ import type {
   updateUserResponse,
   ErrorResponse,
 } from "../types/api";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
 
-export async function getMeApi(accessToken: string): Promise<getMeResponse['data']> {
-  const response = await fetch(`${API_BASE_URL}/users/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
+export async function getMeApi(): Promise<getMeResponse["data"]> {
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/users/me`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     },
-  });
-  if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
-  }
+    10000,
+  );
   const json = (await response.json()) as {
-    data?: getMeResponse['data'];
+    data?: getMeResponse["data"];
     error?: ErrorResponse;
   };
-  return json.data as getMeResponse['data'];
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to fetch user profile");
+  }
+  return json.data as getMeResponse["data"];
 }
 
 export async function getUserApi(username: string): Promise<getUserResponse> {
-  const response = await fetch(`${API_BASE_URL}/users/${username}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-  if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
-  }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/users/${username}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+    10000,
+  );
   const json = (await response.json()) as {
     data?: getUserResponse;
     error?: ErrorResponse;
   };
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to fetch user");
+  }
   return json.data as getUserResponse;
 }
 
 export async function updateUserApi(
   username: string,
   request: updateUserRequest,
-): Promise<updateUserResponse['data']> {
-  const response = await fetch(`${API_BASE_URL}/users/${username}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
-  });
-  if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
+  csrfToken?: string,
+): Promise<updateUserResponse["data"]> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
   }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/users/${username}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(request),
+      credentials: "include",
+    },
+    10000,
+  );
   const json = (await response.json()) as {
-    data?: updateUserResponse['data'];
+    data?: updateUserResponse["data"];
     error?: ErrorResponse;
   };
-  return json.data as updateUserResponse['data'];
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to update user");
+  }
+  return json.data as updateUserResponse["data"];
 }
 
-export async function deleteUserApi(): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/users/me`, {
-    method: "DELETE",
-    headers: { "Content-Type": "application/json" },
-  });
+export async function deleteUserApi(csrfToken?: string): Promise<void> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (csrfToken) {
+    headers["X-CSRF-Token"] = csrfToken;
+  }
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/users/me`,
+    {
+      method: "DELETE",
+      headers,
+      credentials: "include",
+    },
+    10000,
+  );
+  const json = (await response.json()) as {
+    error?: ErrorResponse;
+  };
   if (!response.ok) {
-    const error: ErrorResponse = await response.json();
-    throw new Error(error.message);
+    throw new Error(json.error?.message || "Failed to delete user");
   }
   return;
 }

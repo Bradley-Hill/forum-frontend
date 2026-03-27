@@ -3,8 +3,7 @@ import type { User } from "./api";
 export interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  csrfToken: string | null;
   loading: boolean;
   error: string | null;
   isInitialized: boolean;
