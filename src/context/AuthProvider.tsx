@@ -8,6 +8,19 @@ import {
   refreshTokenApi,
 } from "../api/authApi";
 import { getMeApi, updateUserApi, deleteUserApi } from "../api/userApi";
+import { isRateLimitAllowed } from "../utils/rateLimit";
+
+const getErrorMessage = (err: unknown, defaultMessage: string): string => {
+  if (err instanceof Error) return err.message;
+  if (typeof err === 'string') return err;
+  return defaultMessage;
+};
+
+const isValidUpdateUserRequest = (data: unknown): data is updateUserRequest => {
+  if (typeof data !== 'object' || data === null) return false;
+  const obj = data as Record<string, unknown>;
+  return Object.keys(obj).every(key => ['username', 'email'].includes(key));
+};
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -23,6 +36,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const login = async (email: string, password: string) => {
+    if (!isRateLimitAllowed("login", 2000)) {
+      setError("Please wait before trying to login again");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -30,13 +47,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userResponse = await getMeApi();
       setAuthenticatedUser(userResponse, loginResponse.csrfToken);
     } catch (err) {
-      setError((err as Error).message || "Login failed");
+      setError(getErrorMessage(err, "Login failed"));
     } finally {
       setLoading(false);
     }
   };
 
   const logout = async () => {
+    if (!isRateLimitAllowed("logout", 1000)) {
+      setError("Please wait before trying to logout again");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -44,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setCsrfToken(null);
     } catch (err) {
-      setError((err as Error).message || "Logout failed");
+      setError(getErrorMessage(err, "Logout failed"));
     } finally {
       setLoading(false);
     }
@@ -55,6 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: string,
     password: string,
   ) => {
+    if (!isRateLimitAllowed("register", 3000)) {
+      setError("Please wait before trying to register again");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -62,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userResponse = await getMeApi();
       setAuthenticatedUser(userResponse, registerResponse.csrfToken);
     } catch (err) {
-      setError((err as Error).message || "Registration failed");
+      setError(getErrorMessage(err, "Registration failed"));
     } finally {
       setLoading(false);
     }
@@ -79,24 +104,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateUser = async (data: Partial<User>) => {
+    if (!isRateLimitAllowed("updateUser", 2000)) {
+      setError("Please wait before updating your profile again");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       if (!user || !csrfToken) return;
+      if (!isValidUpdateUserRequest(data)) {
+        throw new Error("Invalid user update data");
+      }
       const updated = await updateUserApi(
         user.username,
-        data as updateUserRequest,
+        data,
         csrfToken,
       );
       setUser({ ...user, ...updated });
     } catch (err) {
-      setError((err as Error).message || "Update failed");
+      setError(getErrorMessage(err, "Update failed"));
     } finally {
       setLoading(false);
     }
   };
 
   const deleteUser = async () => {
+    if (!isRateLimitAllowed("deleteUser", 2000)) {
+      setError("Please wait before deleting your account again");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -105,7 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setCsrfToken(null);
     } catch (err) {
-      setError((err as Error).message || "Delete failed");
+      setError(getErrorMessage(err, "Delete failed"));
     } finally {
       setLoading(false);
     }

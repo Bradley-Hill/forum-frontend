@@ -34,7 +34,10 @@ const Modal: React.FC<ModalProps> = ({
     if (!isOpen) return;
 
     // Store the element that had focus before modal opened
-    previousFocusRef.current = document.activeElement as HTMLElement;
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLElement) {
+      previousFocusRef.current = activeElement;
+    }
 
     // Focus the modal
     if (modalRef.current) {

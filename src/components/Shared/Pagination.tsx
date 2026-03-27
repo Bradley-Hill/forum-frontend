@@ -93,7 +93,11 @@ const Pagination: React.FC<PaginationProps> = ({
               );
             }
 
-            const page = pageNum as number;
+            const page = Number(pageNum);
+            if (isNaN(page)) {
+              console.warn(`Invalid page number: ${pageNum}`);
+              return null;
+            }
             const isCurrentPage = page === currentPage;
 
             return (
