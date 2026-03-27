@@ -1,10 +1,10 @@
-import AuthForms from "../components/User/AuthForms";
+import AuthContainer from "../components/User/AuthContainer";
 
 function Login() {
   return (
     <div>
       <h1>Login Page</h1>
-      <AuthForms />
+      <AuthContainer />
     </div>
   );
 }

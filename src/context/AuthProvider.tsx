@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import AuthContext from "./AuthContext";
 import type { User, updateUserRequest } from "../types/api";
 import {
@@ -13,24 +13,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
+  const initializeRef = useRef(false);
+
+  const setAuthenticatedUser = (userResponse: User, token: string) => {
+    setUser(userResponse);
+    setCsrfToken(token);
+  };
 
   const login = async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
       const loginResponse = await loginApi(email, password);
-      setCsrfToken(loginResponse.csrfToken);
-      setIsAuthenticated(true);
       const userResponse = await getMeApi();
-      setUser({
-        id: userResponse.id,
-        username: userResponse.username,
-        email: userResponse.email,
-        role: userResponse.role,
-      });
+      setAuthenticatedUser(userResponse, loginResponse.csrfToken);
     } catch (err) {
       setError((err as Error).message || "Login failed");
     } finally {
@@ -44,7 +42,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await logoutApi();
       setUser(null);
-      setIsAuthenticated(false);
       setCsrfToken(null);
     } catch (err) {
       setError((err as Error).message || "Logout failed");
@@ -62,15 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       const registerResponse = await registerApi(username, email, password);
-      setCsrfToken(registerResponse.csrfToken);
-      setIsAuthenticated(true);
       const userResponse = await getMeApi();
-      setUser({
-        id: userResponse.id,
-        username: userResponse.username,
-        email: userResponse.email,
-        role: userResponse.role,
-      });
+      setAuthenticatedUser(userResponse, registerResponse.csrfToken);
     } catch (err) {
       setError((err as Error).message || "Registration failed");
     } finally {
@@ -84,7 +74,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setCsrfToken(response.csrfToken);
     } catch {
       setUser(null);
-      setIsAuthenticated(false);
       setCsrfToken(null);
     }
   };
@@ -114,7 +103,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!csrfToken) return;
       await deleteUserApi(csrfToken);
       setUser(null);
-      setIsAuthenticated(false);
       setCsrfToken(null);
     } catch (err) {
       setError((err as Error).message || "Delete failed");
@@ -124,18 +112,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    if (initializeRef.current) return;
+    initializeRef.current = true;
+
     const initializeAuth = async () => {
       try {
         const userResponse = await getMeApi();
-        setUser({
-          id: userResponse.id,
-          username: userResponse.username,
-          email: userResponse.email,
-          role: userResponse.role,
-        });
-        setIsAuthenticated(true);
-      } catch {
-        setIsAuthenticated(false);
+        await refresh();
+        setUser(userResponse);
+      } catch (err) {
+        console.debug("Auth initialization failed:", err);
       } finally {
         setIsInitialized(true);
       }
@@ -143,6 +129,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     initializeAuth();
   }, []);
+
+  const isAuthenticated = user !== null;
 
   return (
     <AuthContext.Provider

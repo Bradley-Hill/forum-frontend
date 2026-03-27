@@ -19,12 +19,16 @@ export async function registerApi(
   email: string,
   password: string,
 ): Promise<RegisterResponse> {
-  const response = await fetchWithTimeout(`${API_BASE_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, email, password } as RegisterRequest),
-    credentials: "include",
-  }, 10000);
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password } as RegisterRequest),
+      credentials: "include",
+    },
+    10000,
+  );
 
   const json = (await response.json()) as {
     data?: RegisterResponse;
@@ -42,12 +46,16 @@ export async function loginApi(
   email: string,
   password: string,
 ): Promise<LoginResponse> {
-  const response = await fetchWithTimeout(`${API_BASE_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password } as LoginRequest),
-    credentials: "include",
-  }, 10000);
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/auth/login`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password } as LoginRequest),
+      credentials: "include",
+    },
+    10000,
+  );
 
   const json = (await response.json()) as {
     data?: LoginResponse;
@@ -61,16 +69,20 @@ export async function loginApi(
   return json.data as LoginResponse;
 }
 
-export async function refreshTokenApi(): Promise<RefreshResponse['data']> {
-  const response = await fetchWithTimeout(`${API_BASE_URL}/auth/refresh`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({} as RefreshRequest),
-    credentials: "include",
-  }, 10000);
+export async function refreshTokenApi(): Promise<RefreshResponse["data"]> {
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/auth/refresh`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({} as RefreshRequest),
+      credentials: "include",
+    },
+    10000,
+  );
 
   const json = (await response.json()) as {
-    data?: RefreshResponse['data'];
+    data?: RefreshResponse["data"];
     error?: ErrorResponse;
   };
 
@@ -78,16 +90,20 @@ export async function refreshTokenApi(): Promise<RefreshResponse['data']> {
     throw new Error(json.error?.message || "Token refresh failed");
   }
 
-  return json.data as RefreshResponse['data'];
+  return json.data as RefreshResponse["data"];
 }
 
 export async function logoutApi(): Promise<LogoutResponse> {
-  const response = await fetchWithTimeout(`${API_BASE_URL}/auth/logout`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({} as LogoutRequest),
-    credentials: "include",
-  }, 10000);
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/auth/logout`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({} as LogoutRequest),
+      credentials: "include",
+    },
+    10000,
+  );
 
   const json = (await response.json()) as {
     data?: LogoutResponse;
