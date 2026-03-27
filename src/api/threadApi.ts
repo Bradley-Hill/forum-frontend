@@ -190,3 +190,27 @@ export async function deleteThreadApi(
   }
   return;
 }
+
+export async function getThreadDetailsApi(
+  id: string,
+  page: number = 1,
+  pageSize: number = 20,
+): Promise<threadsApiResponse["data"]> {
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/threads/${id}?page=${page}&pageSize=${pageSize}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    },
+    10000,
+  );
+  const json = (await response.json()) as {
+    data?: threadsApiResponse["data"];
+    error?: ErrorResponse;
+  };
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to fetch thread details");
+  }
+  return json.data as threadsApiResponse["data"];
+}

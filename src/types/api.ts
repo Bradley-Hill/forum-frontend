@@ -237,19 +237,16 @@ export interface Thread {
 
 export interface Post {
   id: string;
-  title: string;
-  is_sticky: boolean;
-  is_locked: boolean;
+  thread_id: string;
+  author: { id: string; username: string };
+  content: string;
   created_at: string;
   updated_at: string;
-  author: { id: string; username: string };
-  reply_count: number;
-  category_id: string;
 }
 
 export interface Pagination {
   page: number;
   pageSize: number;
-  totalItems: number;
+  totalPosts: number;
   totalPages: number;
 }

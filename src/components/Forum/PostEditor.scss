@@ -1,0 +1,84 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.post-editor {
+  background-color: $background-light;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  margin-top: $spacing-lg;
+
+  .editor-title {
+    margin: 0 0 $spacing-md 0;
+    color: $text-primary;
+    font-size: $font-size-lg;
+  }
+
+  .editor-form {
+    .form-group {
+      margin-bottom: $spacing-md;
+
+      label {
+        display: block;
+        margin-bottom: $spacing-sm;
+        font-weight: 600;
+        color: $text-primary;
+        font-size: $font-size-sm;
+      }
+
+      .editor-textarea {
+        width: 100%;
+        padding: $spacing-md;
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        font-family: inherit;
+        font-size: $font-size-base;
+        line-height: 1.5;
+        resize: vertical;
+        transition: border-color $transition-duration, box-shadow $transition-duration;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+        }
+
+        &:disabled {
+          background-color: $background-secondary;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: $spacing-sm;
+
+      .primary-btn {
+        padding: $spacing-sm $spacing-lg;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        border-radius: $border-radius;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color $transition-duration;
+
+        &:hover:not(:disabled) {
+          background-color: darken($primary-color, 10%);
+        }
+
+        &:active:not(:disabled) {
+          transform: scale(0.98);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
