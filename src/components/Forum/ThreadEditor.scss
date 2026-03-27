@@ -1,0 +1,161 @@
+@use "../../styles/variables" as vars;
+
+.thread-editor-form {
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: vars.$color-text-main;
+      font-size: 0.875rem;
+    }
+
+    .editor-select,
+    .editor-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid vars.$color-border-light;
+      border-radius: 0.25rem;
+      font-family: inherit;
+      font-size: 1rem;
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: vars.$color-accent;
+        box-shadow: 0 0 0 3px rgba(vars.$color-accent, 0.1);
+      }
+
+      &:disabled {
+        background-color: vars.$color-bg-disabled;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+
+    .editor-select {
+      cursor: pointer;
+    }
+
+    .category-indicator {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, rgba(vars.$color-accent, 0.05) 0%, rgba(vars.$color-accent, 0.02) 100%);
+      border: 2px solid vars.$color-accent;
+      border-left: 5px solid vars.$color-accent;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .location-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgba(vars.$color-text-main, 0.6);
+      }
+
+      .category-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: vars.$color-accent;
+        word-break: break-word;
+      }
+    }
+
+    .editor-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid vars.$color-border-light;
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: vars.$color-accent;
+        box-shadow: 0 0 0 3px rgba(vars.$color-accent, 0.1);
+      }
+
+      &:disabled {
+        background-color: vars.$color-bg-disabled;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+
+    .char-count {
+      display: block;
+      margin-top: 0.375rem;
+      font-size: 0.75rem;
+      color: vars.$color-text-muted;
+      text-align: right;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+
+    .primary-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: vars.$color-accent;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover:not(:disabled) {
+        background-color: darken(vars.$color-accent, 15%);
+      }
+
+      &:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .secondary-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: vars.$color-bg-disabled;
+      color: vars.$color-text-main;
+      border: 1px solid vars.$color-border-light;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition:
+        background-color 0.2s,
+        border-color 0.2s;
+
+      &:hover:not(:disabled) {
+        background-color: darken(vars.$color-bg-disabled, 10%);
+        border-color: vars.$color-text-muted;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

@@ -3,49 +3,49 @@
 
 .post-list {
   .thread-header {
-    margin-bottom: $spacing-lg;
-    padding: $spacing-lg;
-    background-color: $background-secondary;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: $color-bg-disabled;
     border-radius: $border-radius;
-    border-left: 4px solid $primary-color;
+    border-left: 4px solid $color-accent;
 
     .thread-title {
-      margin: 0 0 $spacing-md 0;
-      color: $text-primary;
-      font-size: $font-size-2xl;
+      margin: 0 0 1rem 0;
+      color: $color-text-main;
+      font-size: 2rem;
     }
 
     .thread-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: $spacing-md;
-      font-size: $font-size-sm;
-      color: $text-secondary;
+      gap: 1rem;
+      font-size: 0.875rem;
+      color: $color-text-muted;
 
       .thread-meta-item {
         display: flex;
         align-items: center;
-        gap: $spacing-xs;
+        gap: 0.25rem;
 
         strong {
-          color: $text-primary;
+          color: $color-text-main;
         }
 
         &.badge {
-          padding: $spacing-xs $spacing-sm;
-          background-color: $background-light;
+          padding: 0.375rem 0.5rem;
+          background-color: $color-bg-main;
           border-radius: $border-radius;
           font-weight: 500;
-          font-size: $font-size-xs;
+          font-size: 0.75rem;
 
           &.badge-locked {
-            background-color: rgba($error-color, 0.1);
-            color: $error-color;
+            background-color: rgba($color-error, 0.1);
+            color: $color-error;
           }
 
           &.badge-sticky {
-            background-color: rgba($accent-color, 0.1);
-            color: $accent-color;
+            background-color: rgba($color-accent, 0.1);
+            color: $color-accent;
           }
         }
       }
@@ -53,13 +53,13 @@
   }
 
   .posts-container {
-    margin-bottom: $spacing-lg;
+    margin-bottom: 1.5rem;
 
     .no-posts {
       text-align: center;
-      padding: $spacing-lg;
-      color: $text-secondary;
-      font-size: $font-size-lg;
+      padding: 1.5rem;
+      color: $color-text-muted;
+      font-size: 1.125rem;
     }
   }
 }

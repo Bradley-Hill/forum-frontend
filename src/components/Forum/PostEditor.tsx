@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { createPostApi } from "../../api/postApi";
 import Button from "../Shared/Button";
 import Alert from "../Shared/Alert";
+import Form from "../Shared/Form";
 import type { postCreateRequest } from "../../types/api";
 import "./PostEditor.scss";
 
@@ -35,6 +36,7 @@ const PostEditor: React.FC<PostEditorProps> = ({ threadId, onPostCreated }) => {
 
     try {
       setLoading(true);
+
       const request: postCreateRequest = {
         thread_id: threadId,
         content: content.trim(),
@@ -82,7 +84,7 @@ const PostEditor: React.FC<PostEditorProps> = ({ threadId, onPostCreated }) => {
           onClose={() => setSuccess(false)}
         />
       )}
-      <form onSubmit={handleSubmit} className="editor-form">
+      <Form onSubmit={handleSubmit} className="editor-form">
         <div className="form-group">
           <label htmlFor="content">Your Reply</label>
           <textarea
@@ -104,7 +106,7 @@ const PostEditor: React.FC<PostEditorProps> = ({ threadId, onPostCreated }) => {
             {loading ? "Posting..." : "Post Reply"}
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 };

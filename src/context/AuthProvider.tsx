@@ -12,14 +12,14 @@ import { isRateLimitAllowed } from "../utils/rateLimit";
 
 const getErrorMessage = (err: unknown, defaultMessage: string): string => {
   if (err instanceof Error) return err.message;
-  if (typeof err === 'string') return err;
+  if (typeof err === "string") return err;
   return defaultMessage;
 };
 
 const isValidUpdateUserRequest = (data: unknown): data is updateUserRequest => {
-  if (typeof data !== 'object' || data === null) return false;
+  if (typeof data !== "object" || data === null) return false;
   const obj = data as Record<string, unknown>;
-  return Object.keys(obj).every(key => ['username', 'email'].includes(key));
+  return Object.keys(obj).every((key) => ["username", "email"].includes(key));
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -30,11 +30,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
   const initializeRef = useRef(false);
 
-  const setAuthenticatedUser = (userResponse: User, token: string) => {
-    setUser(userResponse);
-    setCsrfToken(token);
-  };
-
   const login = async (email: string, password: string) => {
     if (!isRateLimitAllowed("login", 2000)) {
       setError("Please wait before trying to login again");
@@ -44,8 +39,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       const loginResponse = await loginApi(email, password);
+      // Set CSRF token immediately so it's available even if getMeApi fails
+      setCsrfToken(loginResponse.csrfToken);
       const userResponse = await getMeApi();
-      setAuthenticatedUser(userResponse, loginResponse.csrfToken);
+      setUser(userResponse);
     } catch (err) {
       setError(getErrorMessage(err, "Login failed"));
     } finally {
@@ -84,8 +81,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       const registerResponse = await registerApi(username, email, password);
+      // Set CSRF token immediately so it's available even if getMeApi fails
+      setCsrfToken(registerResponse.csrfToken);
       const userResponse = await getMeApi();
-      setAuthenticatedUser(userResponse, registerResponse.csrfToken);
+      setUser(userResponse);
     } catch (err) {
       setError(getErrorMessage(err, "Registration failed"));
     } finally {
@@ -93,13 +92,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const refresh = async () => {
+  const refresh = async (): Promise<string> => {
     try {
       const response = await refreshTokenApi();
       setCsrfToken(response.csrfToken);
+      return response.csrfToken;
     } catch {
-      setUser(null);
-      setCsrfToken(null);
+      console.debug("Token refresh failed");
+      return csrfToken ?? "";
     }
   };
 
@@ -115,11 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!isValidUpdateUserRequest(data)) {
         throw new Error("Invalid user update data");
       }
-      const updated = await updateUserApi(
-        user.username,
-        data,
-        csrfToken,
-      );
+      const updated = await updateUserApi(user.username, data, csrfToken);
       setUser({ ...user, ...updated });
     } catch (err) {
       setError(getErrorMessage(err, "Update failed"));
@@ -154,7 +150,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const initializeAuth = async () => {
       try {
         const userResponse = await getMeApi();
-        await refresh();
         setUser(userResponse);
       } catch (err) {
         console.debug("Auth initialization failed:", err);

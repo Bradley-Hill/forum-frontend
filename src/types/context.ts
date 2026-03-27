@@ -9,8 +9,12 @@ export interface AuthContextType {
   isInitialized: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (username: string, email: string, password: string) => Promise<void>;
-  refresh: () => Promise<void>;
+  register: (
+    username: string,
+    email: string,
+    password: string,
+  ) => Promise<void>;
+  refresh: () => Promise<string>;
   updateUser: (data: Partial<User>) => Promise<void>;
   deleteUser: () => Promise<void>;
   setUser: (user: User | null) => void;
