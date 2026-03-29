@@ -2,11 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import Home from "./routes/Home.tsx";
 import Login from "./routes/Login.tsx";
+import Logout from "./routes/Logout.tsx";
 import Categories from "./routes/Categories.tsx";
 import Threads from "./routes/Threads.tsx";
 import Posts from "./routes/Posts.tsx";
+import Profile from "./routes/Profile.tsx";
+import Unauthorized from "./routes/Unauthorized.tsx";
 import NotFound from "./routes/NotFound.tsx";
 import Layout from "./components/Layout/Layout.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 function App() {
   return (
@@ -15,10 +19,20 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/threads/:categorySlug" element={<Threads />} />
             <Route path="/post/:threadId" element={<Posts />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             {/* Add more routes as needed */}
             <Route path="*" element={<NotFound />} />
           </Routes>

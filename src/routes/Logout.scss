@@ -1,0 +1,35 @@
+@use '../styles/variables' as vars;
+
+.logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+  text-align: center;
+
+  .logout-message {
+    font-size: 1.1rem;
+    color: vars.$color-text-main;
+    margin-top: 1.5rem;
+  }
+}
+.logout-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .logout-confirm-message {
+    font-size: 1rem;
+    color: vars.$color-text-main;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .logout-confirm-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+}

@@ -51,10 +51,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    if (!isRateLimitAllowed("logout", 1000)) {
-      setError("Please wait before trying to logout again");
-      return;
-    }
     setLoading(true);
     setError(null);
     try {

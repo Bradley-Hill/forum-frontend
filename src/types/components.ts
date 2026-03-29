@@ -92,3 +92,8 @@ export interface FormProps {
   children: ReactNode;
   className?: string;
 }
+
+export interface ProtectedRouteProps {
+  children: ReactNode;
+  requiredRole?: "member" | "admin";
+}
