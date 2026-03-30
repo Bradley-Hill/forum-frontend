@@ -9,6 +9,7 @@ import {
 } from "../api/authApi";
 import { getMeApi, updateUserApi, deleteUserApi } from "../api/userApi";
 import { isRateLimitAllowed } from "../utils/rateLimit";
+import { registerTokenRefreshHandler } from "../utils/fetchWithAuth";
 
 const getErrorMessage = (err: unknown, defaultMessage: string): string => {
   if (err instanceof Error) return err.message;
@@ -151,6 +152,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    registerTokenRefreshHandler((token) => setCsrfToken(token));
+  }, []);
 
   useEffect(() => {
     if (initializeRef.current) return;

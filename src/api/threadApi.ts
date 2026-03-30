@@ -11,6 +11,7 @@ import type {
   threadLockUpdateResponse,
 } from "../types/api";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import { fetchWithAuth } from "../utils/fetchWithAuth";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
@@ -49,7 +50,7 @@ export async function createThreadApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/threads`,
     {
       method: "POST",
@@ -80,7 +81,7 @@ export async function updateThreadApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/threads/${id}`,
     {
       method: "PATCH",
@@ -111,7 +112,7 @@ export async function threadLockUpdateApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/threads/${id}/lock`,
     {
       method: "PATCH",
@@ -142,7 +143,7 @@ export async function threadStickyUpdateApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/threads/${id}/sticky`,
     {
       method: "PATCH",
@@ -174,7 +175,7 @@ export async function deleteThreadApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/threads/${id}`,
     {
       method: "DELETE",

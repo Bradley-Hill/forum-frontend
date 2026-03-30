@@ -16,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   updateUser: async (data: Partial<User>) => {},
   deleteUser: async () => {},
   setUser: (user: User | null) => {},
+  changePassword: async (currentPassword: string, newPassword: string) => {},
 });
 
 export default AuthContext;

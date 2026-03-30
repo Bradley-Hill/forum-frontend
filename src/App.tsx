@@ -8,6 +8,7 @@ import Threads from "./routes/Threads.tsx";
 import Posts from "./routes/Posts.tsx";
 import Profile from "./routes/Profile.tsx";
 import Admin from "./routes/Admin.tsx";
+import UserProfile from "./routes/UserProfile.tsx";
 import Unauthorized from "./routes/Unauthorized.tsx";
 import NotFound from "./routes/NotFound.tsx";
 import Layout from "./components/Layout/Layout.tsx";
@@ -26,6 +27,7 @@ function App() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/threads/:categorySlug" element={<Threads />} />
             <Route path="/post/:threadId" element={<Posts />} />
+            <Route path="/users/:username" element={<UserProfile />} />
             <Route
               path="/profile"
               element={

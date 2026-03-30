@@ -1,17 +1,19 @@
 import type {
   getMeResponse,
   getUserResponse,
+  getUserThreadsResponse,
   updateUserRequest,
   updateUserResponse,
   ErrorResponse,
 } from "../types/api";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import { fetchWithAuth } from "../utils/fetchWithAuth";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
 
 export async function getMeApi(): Promise<getMeResponse["data"]> {
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/users/me`,
     {
       method: "GET",
@@ -42,13 +44,36 @@ export async function getUserApi(username: string): Promise<getUserResponse> {
     10000,
   );
   const json = (await response.json()) as {
-    data?: getUserResponse;
+    data?: getUserResponse["data"];
     error?: ErrorResponse;
   };
   if (!response.ok) {
     throw new Error(json.error?.message || "Failed to fetch user");
   }
-  return json.data as getUserResponse;
+  return json as getUserResponse;
+}
+
+export async function getUserThreadsApi(
+  username: string,
+  page: number = 1,
+  pageSize: number = 10,
+): Promise<getUserThreadsResponse["data"]> {
+  const response = await fetchWithTimeout(
+    `${API_BASE_URL}/users/${username}/threads?page=${page}&pageSize=${pageSize}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+    10000,
+  );
+  const json = (await response.json()) as {
+    data?: getUserThreadsResponse["data"];
+    error?: ErrorResponse;
+  };
+  if (!response.ok) {
+    throw new Error(json.error?.message || "Failed to fetch user threads");
+  }
+  return json.data as getUserThreadsResponse["data"];
 }
 
 export async function updateUserApi(
@@ -61,7 +86,7 @@ export async function updateUserApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/users/me`,
     {
       method: "PATCH",
@@ -88,7 +113,7 @@ export async function deleteUserApi(csrfToken?: string): Promise<void> {
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/users/me`,
     {
       method: "DELETE",

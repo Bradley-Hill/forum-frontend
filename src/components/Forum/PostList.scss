@@ -63,3 +63,28 @@
     }
   }
 }
+
+.post-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.post-edit-textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background-color: vars.$color-bg-main;
+  color: vars.$color-text-main;
+  border: 1px solid vars.$color-border-light;
+  border-radius: vars.$border-radius;
+  font-size: 0.875rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$color-accent;
+    box-shadow: 0 0 0 2px rgba(vars.$color-accent, 0.2);
+  }
+}

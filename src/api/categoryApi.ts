@@ -8,6 +8,7 @@ import type {
   ErrorResponse,
 } from "../types/api";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import { fetchWithAuth } from "../utils/fetchWithAuth";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
@@ -21,7 +22,7 @@ export async function createCategoryApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(`${API_BASE_URL}/categories`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/categories`, {
     method: "POST",
     headers,
     body: JSON.stringify({ name, description } as categoryRequest),
@@ -50,7 +51,7 @@ export async function updateCategoryApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(`${API_BASE_URL}/categories/${id}`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/categories/${id}`, {
     method: "PATCH",
     headers,
     body: JSON.stringify({ name, description } as categoryUpdateRequest),
@@ -74,7 +75,7 @@ export async function deleteCategoryApi(id: string, csrfToken?: string): Promise
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(`${API_BASE_URL}/categories/${id}`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/categories/${id}`, {
     method: "DELETE",
     headers,
     credentials: "include",

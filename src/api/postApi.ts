@@ -3,7 +3,7 @@ import type {
   postCreateResponse,
   ErrorResponse,
 } from "../types/api";
-import { fetchWithTimeout } from "../utils/fetchWithTimeout";
+import { fetchWithAuth } from "../utils/fetchWithAuth";
 
 // const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
 const API_BASE_URL = "http://localhost:3000/api"; // Development
@@ -18,7 +18,7 @@ export async function createPostApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/posts`,
     {
       method: "POST",
@@ -51,7 +51,7 @@ export async function updatePostApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/posts/${id}`,
     {
       method: "PATCH",
@@ -83,7 +83,7 @@ export async function deletePostApi(
   if (csrfToken) {
     headers["X-CSRF-Token"] = csrfToken;
   }
-  const response = await fetchWithTimeout(
+  const response = await fetchWithAuth(
     `${API_BASE_URL}/posts/${id}`,
     {
       method: "DELETE",
@@ -93,8 +93,8 @@ export async function deletePostApi(
     10000,
   );
 
-  const json = (await response.json()) as { error?: ErrorResponse };
   if (!response.ok) {
+    const json = (await response.json()) as { error?: ErrorResponse };
     throw new Error(json.error?.message || "Failed to delete post");
   }
 }

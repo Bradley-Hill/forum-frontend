@@ -1,13 +1,24 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import type { Post } from "../../types/api";
+import Button from "../Shared/Button";
 import "./PostItem.scss";
 
 interface PostItemProps {
   post: Post;
   postNumber: number;
+  canModify?: boolean;
+  onEdit?: (post: Post) => void;
+  onDelete?: (post: Post) => void;
 }
 
-const PostItem: React.FC<PostItemProps> = ({ post, postNumber }) => {
+const PostItem: React.FC<PostItemProps> = ({
+  post,
+  postNumber,
+  canModify = false,
+  onEdit,
+  onDelete,
+}) => {
   const formattedDate = useMemo(() => {
     return new Date(post.created_at).toLocaleDateString("en-US", {
       year: "numeric",
@@ -49,7 +60,7 @@ const PostItem: React.FC<PostItemProps> = ({ post, postNumber }) => {
             </span>
           </div>
           <div className="author-info">
-            <p className="author-username">{post.author.username}</p>
+            <Link to={`/users/${post.author.username}`} className="author-link author-username">{post.author.username}</Link>
           </div>
         </div>
 
@@ -58,9 +69,12 @@ const PostItem: React.FC<PostItemProps> = ({ post, postNumber }) => {
         </div>
       </div>
 
-      <div className="post-footer">
-        <button className="post-action-btn">Reply With Quote</button>
-      </div>
+      {canModify && (
+        <div className="post-footer">
+          <Button variant="secondary" onClick={() => onEdit?.(post)}>Edit</Button>
+          <Button variant="danger" onClick={() => onDelete?.(post)}>Delete</Button>
+        </div>
+      )}
     </div>
   );
 };

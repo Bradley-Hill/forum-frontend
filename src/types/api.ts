@@ -1,3 +1,5 @@
+export type TokenUpdater = (csrfToken: string) => void;
+
 export interface ErrorResponse {
   message: string;
   code: string;
@@ -251,6 +253,13 @@ export interface Post {
 export interface Pagination {
   page: number;
   pageSize: number;
-  totalPosts: number;
+  totalItems: number;
   totalPages: number;
+}
+
+export interface getUserThreadsResponse {
+  data: {
+    threads: Thread[];
+    pagination: Pagination;
+  };
 }

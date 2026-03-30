@@ -108,3 +108,29 @@
     color: #d32f2f;
   }
 }
+
+.thread-actions {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.thread-action-btn {
+  background: none !important;
+  color: vars.$color-text-muted !important;
+  border: 1px solid vars.$color-border-light !important;
+  font-weight: 400 !important;
+  opacity: 0.75;
+
+  &:hover:not(:disabled) {
+    opacity: 1;
+    color: vars.$color-link !important;
+    border-color: vars.$color-link !important;
+    transform: none;
+  }
+
+  &.thread-action-btn--danger:hover:not(:disabled) {
+    color: vars.$color-error !important;
+    border-color: vars.$color-error !important;
+  }
+}
