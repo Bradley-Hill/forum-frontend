@@ -1,0 +1,14 @@
+@use "../../styles/variables" as vars;
+
+.admin-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.admin-panel-section {
+  background-color: vars.$color-bg-main;
+  border: 1px solid vars.$color-border-light;
+  border-radius: vars.$border-radius;
+  padding: 2rem;
+}

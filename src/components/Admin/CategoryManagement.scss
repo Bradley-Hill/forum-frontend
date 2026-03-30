@@ -1,0 +1,91 @@
+@use "../../styles/variables" as vars;
+
+.category-management {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.category-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: vars.$color-text-main;
+  }
+}
+
+.category-management-loading,
+.category-management-empty {
+  color: vars.$color-text-muted;
+  font-size: 0.95rem;
+}
+
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background-color: vars.$color-bg-disabled;
+    border-bottom: 2px solid vars.$color-border-light;
+    color: vars.$color-text-main;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid vars.$color-border-light;
+    color: vars.$color-text-main;
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background-color: vars.$color-bg-disabled;
+  }
+}
+
+.category-slug {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: vars.$color-text-muted;
+}
+
+.category-actions {
+  display: flex;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  p {
+    margin: 0;
+    color: vars.$color-text-main;
+  }
+}

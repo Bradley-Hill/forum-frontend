@@ -1,0 +1,26 @@
+@use "../styles/variables" as vars;
+
+.admin-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid vars.$color-border-light;
+  padding-bottom: 1rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: vars.$color-text-main;
+  }
+
+  .admin-subtitle {
+    font-size: 1rem;
+    color: vars.$color-text-muted;
+    margin: 0;
+  }
+}

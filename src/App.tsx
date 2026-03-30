@@ -7,6 +7,7 @@ import Categories from "./routes/Categories.tsx";
 import Threads from "./routes/Threads.tsx";
 import Posts from "./routes/Posts.tsx";
 import Profile from "./routes/Profile.tsx";
+import Admin from "./routes/Admin.tsx";
 import Unauthorized from "./routes/Unauthorized.tsx";
 import NotFound from "./routes/NotFound.tsx";
 import Layout from "./components/Layout/Layout.tsx";
@@ -30,6 +31,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Admin />
                 </ProtectedRoute>
               }
             />
