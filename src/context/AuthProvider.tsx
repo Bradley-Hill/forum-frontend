@@ -19,7 +19,9 @@ const getErrorMessage = (err: unknown, defaultMessage: string): string => {
 const isValidUpdateUserRequest = (data: unknown): data is updateUserRequest => {
   if (typeof data !== "object" || data === null) return false;
   const obj = data as Record<string, unknown>;
-  return Object.keys(obj).every((key) => ["username", "email"].includes(key));
+  return Object.keys(obj).every((key) =>
+    ["email", "currentPassword", "newPassword"].includes(key),
+  );
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -45,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(userResponse);
     } catch (err) {
       setError(getErrorMessage(err, "Login failed"));
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -83,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(userResponse);
     } catch (err) {
       setError(getErrorMessage(err, "Registration failed"));
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -107,11 +111,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setError(null);
     try {
-      if (!user || !csrfToken) return;
+      if (!user || !csrfToken)
+        throw new Error("Session expired, please log in again");
       if (!isValidUpdateUserRequest(data)) {
         throw new Error("Invalid user update data");
       }
-      const updated = await updateUserApi(user.username, data, csrfToken);
+      const updated = await updateUserApi(data, csrfToken);
       setUser({ ...user, ...updated });
     } catch (err) {
       setError(getErrorMessage(err, "Update failed"));
@@ -147,6 +152,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const userResponse = await getMeApi();
         setUser(userResponse);
+        const csrfFromCookie = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("csrfToken="))
+          ?.split("=")[1];
+        if (csrfFromCookie) setCsrfToken(csrfFromCookie);
       } catch (err) {
         console.debug("Auth initialization failed:", err);
       } finally {

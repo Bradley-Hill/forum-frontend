@@ -52,7 +52,6 @@ export async function getUserApi(username: string): Promise<getUserResponse> {
 }
 
 export async function updateUserApi(
-  username: string,
   request: updateUserRequest,
   csrfToken?: string,
 ): Promise<updateUserResponse["data"]> {
@@ -63,7 +62,7 @@ export async function updateUserApi(
     headers["X-CSRF-Token"] = csrfToken;
   }
   const response = await fetchWithTimeout(
-    `${API_BASE_URL}/users/${username}`,
+    `${API_BASE_URL}/users/me`,
     {
       method: "PATCH",
       headers,

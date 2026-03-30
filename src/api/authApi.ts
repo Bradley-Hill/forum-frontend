@@ -18,7 +18,7 @@ export async function registerApi(
   username: string,
   email: string,
   password: string,
-): Promise<RegisterResponse> {
+): Promise<RegisterResponse["data"]> {
   const response = await fetchWithTimeout(
     `${API_BASE_URL}/auth/register`,
     {
@@ -31,7 +31,7 @@ export async function registerApi(
   );
 
   const json = (await response.json()) as {
-    data?: RegisterResponse;
+    data?: RegisterResponse["data"];
     error?: ErrorResponse;
   };
 
@@ -39,13 +39,13 @@ export async function registerApi(
     throw new Error(json.error?.message || "Registration failed");
   }
 
-  return json.data as RegisterResponse;
+  return json.data as RegisterResponse["data"];
 }
 
 export async function loginApi(
   email: string,
   password: string,
-): Promise<LoginResponse> {
+): Promise<LoginResponse["data"]> {
   const response = await fetchWithTimeout(
     `${API_BASE_URL}/auth/login`,
     {
@@ -58,7 +58,7 @@ export async function loginApi(
   );
 
   const json = (await response.json()) as {
-    data?: LoginResponse;
+    data?: LoginResponse["data"];
     error?: ErrorResponse;
   };
 
@@ -66,7 +66,7 @@ export async function loginApi(
     throw new Error(json.error?.message || "Login failed");
   }
 
-  return json.data as LoginResponse;
+  return json.data as LoginResponse["data"];
 }
 
 export async function refreshTokenApi(): Promise<RefreshResponse["data"]> {
