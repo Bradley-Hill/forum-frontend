@@ -16,6 +16,7 @@ export interface AuthContextType {
   ) => Promise<void>;
   refresh: () => Promise<string>;
   updateUser: (data: Partial<User>) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   deleteUser: () => Promise<void>;
   setUser: (user: User | null) => void;
 }

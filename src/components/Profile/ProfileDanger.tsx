@@ -1,4 +1,5 @@
 import Button from "../Shared/Button";
+import ProfileChangePassword from "./ProfileChangePassword";
 import "./ProfileDanger.scss";
 
 interface ProfileDangerProps {
@@ -9,6 +10,8 @@ interface ProfileDangerProps {
 function ProfileDanger({ loading, onDelete }: ProfileDangerProps) {
   return (
     <div className="profile-danger">
+      <ProfileChangePassword />
+
       <div className="profile-danger-item">
         <div className="profile-danger-info">
           <h3>Delete Account</h3>

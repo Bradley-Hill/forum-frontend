@@ -125,6 +125,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    if (!isRateLimitAllowed("changePassword", 2000)) {
+      throw new Error("Please wait before changing your password again");
+    }
+    if (!user || !csrfToken) throw new Error("Session expired, please log in again");
+    await updateUserApi({ currentPassword, newPassword }, csrfToken);
+  };
+
   const deleteUser = async () => {
     if (!isRateLimitAllowed("deleteUser", 2000)) {
       setError("Please wait before deleting your account again");
@@ -183,6 +191,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         register,
         refresh,
         updateUser,
+        changePassword,
         deleteUser,
         setUser,
       }}
