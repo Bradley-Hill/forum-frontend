@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/variables" as vars;
 
 .btn {
@@ -52,7 +53,7 @@
   color: vars.$color-text-header-footer;
 
   &:hover:not(:disabled) {
-    background-color: darken(vars.$color-accent, 10%);
+    background-color: color.adjust(vars.$color-accent, $lightness: -10%);
   }
 }
 
@@ -70,6 +71,6 @@
   color: vars.$color-text-header-footer;
 
   &:hover:not(:disabled) {
-    background-color: darken(vars.$color-error, 10%);
+    background-color: color.adjust(vars.$color-error, $lightness: -10%);
   }
 }

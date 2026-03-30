@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../styles/variables" as vars;
 
 .thread-editor-form {
@@ -45,7 +46,11 @@
     .category-indicator {
       width: 100%;
       padding: 1rem;
-      background: linear-gradient(135deg, rgba(vars.$color-accent, 0.05) 0%, rgba(vars.$color-accent, 0.02) 100%);
+      background: linear-gradient(
+        135deg,
+        rgba(vars.$color-accent, 0.05) 0%,
+        rgba(vars.$color-accent, 0.02) 100%
+      );
       border: 2px solid vars.$color-accent;
       border-left: 5px solid vars.$color-accent;
       border-radius: 0.5rem;
@@ -121,7 +126,7 @@
       transition: background-color 0.2s;
 
       &:hover:not(:disabled) {
-        background-color: darken(vars.$color-accent, 15%);
+        background-color: color.adjust(vars.$color-accent, $lightness: -15%);
       }
 
       &:active:not(:disabled) {
@@ -148,7 +153,10 @@
         border-color 0.2s;
 
       &:hover:not(:disabled) {
-        background-color: darken(vars.$color-bg-disabled, 10%);
+        background-color: color.adjust(
+          vars.$color-bg-disabled,
+          $lightness: -10%
+        );
         border-color: vars.$color-text-muted;
       }
 

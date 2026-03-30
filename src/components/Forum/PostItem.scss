@@ -1,11 +1,12 @@
-@import "../../styles/variables";
-@import "../../styles/mixins";
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:color";
 
 .post-item {
-  border: 1px solid $color-border-light;
-  border-radius: $border-radius;
+  border: 1px solid vars.$color-border-light;
+  border-radius: vars.$border-radius;
   margin-bottom: 1rem;
-  background-color: $color-bg-main;
+  background-color: vars.$color-bg-main;
   overflow: hidden;
 
   .post-header {
@@ -13,12 +14,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background-color: $color-bg-disabled;
-    border-bottom: 1px solid $color-border-light;
+    background-color: vars.$color-bg-disabled;
+    border-bottom: 1px solid vars.$color-border-light;
 
     .post-number {
       font-weight: 600;
-      color: $color-accent;
+      color: vars.$color-accent;
       font-size: 1.125rem;
     }
 
@@ -27,7 +28,7 @@
       align-items: center;
       gap: 0.5rem;
       font-size: 0.875rem;
-      color: $color-text-muted;
+      color: vars.$color-text-muted;
 
       .post-date {
         font-weight: 500;
@@ -35,7 +36,7 @@
 
       .post-edited {
         font-style: italic;
-        color: $color-text-muted;
+        color: vars.$color-text-muted;
       }
     }
   }
@@ -52,7 +53,7 @@
       gap: 0.5rem;
       min-width: 100px;
       padding-right: 1rem;
-      border-right: 1px solid $color-border-light;
+      border-right: 1px solid vars.$color-border-light;
 
       .author-avatar {
         width: 60px;
@@ -60,8 +61,8 @@
         border-radius: 50%;
         background: linear-gradient(
           135deg,
-          $color-accent,
-          darken($color-accent, 15%)
+          vars.$color-accent,
+          color.adjust(vars.$color-accent, $lightness: -15%)
         );
         display: flex;
         align-items: center;
@@ -80,7 +81,7 @@
         .author-username {
           margin: 0;
           font-weight: 600;
-          color: $color-text-main;
+          color: vars.$color-text-main;
           word-break: break-word;
         }
       }
@@ -89,7 +90,7 @@
     .post-content {
       flex: 1;
       line-height: 1.6;
-      color: $color-text-main;
+      color: vars.$color-text-main;
 
       p {
         margin: 0 0 0.5rem 0;
@@ -103,24 +104,24 @@
 
   .post-footer {
     padding: 1rem;
-    border-top: 1px solid $color-border-light;
-    background-color: $color-bg-disabled;
+    border-top: 1px solid vars.$color-border-light;
+    background-color: vars.$color-bg-disabled;
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
 
     .post-action-btn {
       padding: 0.375rem 1rem;
-      background-color: $color-accent;
+      background-color: vars.$color-accent;
       color: white;
       border: none;
-      border-radius: $border-radius;
+      border-radius: vars.$border-radius;
       cursor: pointer;
       font-weight: 500;
       transition: background-color 0.2s;
 
       &:hover {
-        background-color: darken($color-accent, 15%);
+        background-color: color.adjust(vars.$color-accent, $lightness: -15%);
       }
 
       &:active {

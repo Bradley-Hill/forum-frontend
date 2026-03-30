@@ -1,16 +1,17 @@
-@import "../../styles/variables";
-@import "../../styles/mixins";
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixins;
+@use "sass:color";
 
 .post-editor {
-  background-color: $color-bg-main;
-  border: 1px solid $color-border-light;
-  border-radius: $border-radius;
+  background-color: vars.$color-bg-main;
+  border: 1px solid vars.$color-border-light;
+  border-radius: vars.$border-radius;
   padding: 1.5rem;
   margin-top: 1.5rem;
 
   .editor-title {
     margin: 0 0 1rem 0;
-    color: $color-text-main;
+    color: vars.$color-text-main;
     font-size: 1.125rem;
   }
 
@@ -22,15 +23,15 @@
         display: block;
         margin-bottom: 0.5rem;
         font-weight: 600;
-        color: $color-text-main;
+        color: vars.$color-text-main;
         font-size: 0.875rem;
       }
 
       .editor-textarea {
         width: 100%;
         padding: 1rem;
-        border: 1px solid $color-border-light;
-        border-radius: $border-radius;
+        border: 1px solid vars.$color-border-light;
+        border-radius: vars.$border-radius;
         font-family: inherit;
         font-size: 1rem;
         line-height: 1.5;
@@ -41,12 +42,12 @@
 
         &:focus {
           outline: none;
-          border-color: $color-link;
-          box-shadow: 0 0 0 3px rgba($color-link, 0.1);
+          border-color: vars.$color-link;
+          box-shadow: 0 0 0 3px rgba(vars.$color-link, 0.1);
         }
 
         &:disabled {
-          background-color: $color-bg-disabled;
+          background-color: vars.$color-bg-disabled;
           cursor: not-allowed;
           opacity: 0.6;
         }
@@ -60,16 +61,16 @@
 
       .primary-btn {
         padding: 0.5rem 1.5rem;
-        background-color: $color-accent;
+        background-color: vars.$color-accent;
         color: white;
         border: none;
-        border-radius: $border-radius;
+        border-radius: vars.$border-radius;
         font-weight: 600;
         cursor: pointer;
         transition: background-color 0.2s;
 
         &:hover:not(:disabled) {
-          background-color: darken($color-accent, 15%);
+          background-color: color.adjust(vars.$color-accent, $lightness: -15%);
         }
 
         &:active:not(:disabled) {

@@ -1,4 +1,5 @@
-@use '../../styles/variables' as vars;
+@use "sass:color";
+@use "../../styles/variables" as vars;
 
 .alert {
   display: flex;
@@ -59,7 +60,7 @@
 .alert--success {
   background-color: rgba(vars.$color-success, 0.1);
   border-left-color: vars.$color-success;
-  color: darken(vars.$color-success, 20%);
+  color: color.adjust(vars.$color-success, $lightness: -20%);
 
   .alert-icon {
     color: vars.$color-success;
@@ -70,7 +71,7 @@
 .alert--error {
   background-color: rgba(vars.$color-error, 0.1);
   border-left-color: vars.$color-error;
-  color: darken(vars.$color-error, 20%);
+  color: color.adjust(vars.$color-error, $lightness: -20%);
 
   .alert-icon {
     color: vars.$color-error;
@@ -81,7 +82,7 @@
 .alert--warning {
   background-color: rgba(vars.$color-warning, 0.1);
   border-left-color: vars.$color-warning;
-  color: darken(vars.$color-warning, 30%);
+  color: color.adjust(vars.$color-warning, $lightness: -30%);
 
   .alert-icon {
     color: vars.$color-warning;
@@ -92,7 +93,7 @@
 .alert--info {
   background-color: rgba(vars.$color-info, 0.1);
   border-left-color: vars.$color-info;
-  color: darken(vars.$color-info, 20%);
+  color: color.adjust(vars.$color-info, $lightness: -20%);
 
   .alert-icon {
     color: vars.$color-info;
