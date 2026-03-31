@@ -1,5 +1,11 @@
 @use '../../styles/variables' as vars;
 
+.layout-container {
+  max-width: vars.$max-width;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
 .skip-link {
   position: absolute;
   left: -999px;

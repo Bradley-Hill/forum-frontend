@@ -10,7 +10,7 @@ import "./Logout.scss";
 function Logout() {
   const navigate = useNavigate();
   const { logout, error } = useAuth();
-  const [isConfirmOpen, setIsConfirmOpen] = useState(true);
+  const [isConfirmOpen, _setIsConfirmOpen] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleConfirmLogout = async () => {
@@ -76,16 +76,10 @@ function Logout() {
           Are you sure you want to log out?
         </p>
         <div className="logout-confirm-actions">
-          <Button
-            onClick={handleCancel}
-            variant="secondary"
-          >
+          <Button onClick={handleCancel} variant="secondary">
             Cancel
           </Button>
-          <Button
-            onClick={handleConfirmLogout}
-            variant="danger"
-          >
+          <Button onClick={handleConfirmLogout} variant="danger">
             Log Out
           </Button>
         </div>

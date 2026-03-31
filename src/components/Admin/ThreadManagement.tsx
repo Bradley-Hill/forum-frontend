@@ -192,7 +192,6 @@ function ThreadManagement() {
                   )}
                 </td>
                 <td data-label="Actions" className="thread-management-actions">
-                  <div>
                     <Button
                       variant="secondary"
                       size="small"
@@ -220,7 +219,6 @@ function ThreadManagement() {
                     >
                       Delete
                     </Button>
-                  </div>
                 </td>
               </tr>
             ))}

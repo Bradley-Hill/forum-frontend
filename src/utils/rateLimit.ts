@@ -1,4 +1,4 @@
-interface RateLimitConfig {
+export interface RateLimitConfig {
   delayMs: number;
 }
 
@@ -9,7 +9,10 @@ interface RateLimitEntry {
 const DEFAULT_DELAY_MS = 1000; // 1 second default cooldown
 const rateLimitMap = new Map<string, RateLimitEntry>();
 
-export function isRateLimitAllowed(key: string, delayMs: number = DEFAULT_DELAY_MS): boolean {
+export function isRateLimitAllowed(
+  key: string,
+  delayMs: number = DEFAULT_DELAY_MS,
+): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(key);
 
@@ -27,7 +30,10 @@ export function isRateLimitAllowed(key: string, delayMs: number = DEFAULT_DELAY_
   return false;
 }
 
-export function getRateLimitRemainingMs(key: string, delayMs: number = DEFAULT_DELAY_MS): number {
+export function getRateLimitRemainingMs(
+  key: string,
+  delayMs: number = DEFAULT_DELAY_MS,
+): number {
   const entry = rateLimitMap.get(key);
   if (!entry) return 0;
 

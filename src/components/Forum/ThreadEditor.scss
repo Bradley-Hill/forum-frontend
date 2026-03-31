@@ -76,6 +76,8 @@
 
     .editor-textarea {
       width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
       padding: 0.75rem;
       border: 1px solid vars.$color-border-light;
       border-radius: 0.25rem;
@@ -114,56 +116,6 @@
     justify-content: flex-end;
     gap: 0.75rem;
 
-    .primary-btn {
-      padding: 0.75rem 1.5rem;
-      background-color: vars.$color-accent;
-      color: white;
-      border: none;
-      border-radius: 0.25rem;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s;
 
-      &:hover:not(:disabled) {
-        background-color: color.adjust(vars.$color-accent, $lightness: -15%);
-      }
-
-      &:active:not(:disabled) {
-        transform: scale(0.98);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
-
-    .secondary-btn {
-      padding: 0.75rem 1.5rem;
-      background-color: vars.$color-bg-disabled;
-      color: vars.$color-text-main;
-      border: 1px solid vars.$color-border-light;
-      border-radius: 0.25rem;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition:
-        background-color 0.2s,
-        border-color 0.2s;
-
-      &:hover:not(:disabled) {
-        background-color: color.adjust(
-          vars.$color-bg-disabled,
-          $lightness: -10%
-        );
-        border-color: vars.$color-text-muted;
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
   }
 }

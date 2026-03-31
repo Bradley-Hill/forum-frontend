@@ -11,8 +11,7 @@ import type {
 } from "../types/api";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
-// const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
-const API_BASE_URL = "http://localhost:3000/api"; // Development
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function registerApi(
   username: string,

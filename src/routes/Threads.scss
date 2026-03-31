@@ -1,0 +1,8 @@
+@use "../styles/variables" as vars;
+
+.threads-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}

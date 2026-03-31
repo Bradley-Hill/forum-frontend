@@ -113,12 +113,12 @@
 
 .thread-management-actions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   white-space: nowrap;
   flex-wrap: wrap;
 }
 
-// Responsive: stack table as cards on mobile
 @include mixins.respond-max(640px) {
   .thread-management-table {
     thead {

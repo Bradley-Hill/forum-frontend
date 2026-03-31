@@ -9,14 +9,14 @@ const AuthContext = createContext<AuthContextType>({
   loading: false,
   error: null,
   isInitialized: false,
-  login: async (username: string, password: string) => {},
+  login: async (_username: string, _password: string) => {},
   logout: () => {},
-  register: async (username: string, email: string, password: string) => {},
+  register: async (_username: string, _email: string, _password: string) => {},
   refresh: async () => "",
-  updateUser: async (data: Partial<User>) => {},
+  updateUser: async (_data: Partial<User>) => {},
   deleteUser: async () => {},
-  setUser: (user: User | null) => {},
-  changePassword: async (currentPassword: string, newPassword: string) => {},
+  setUser: (_user: User | null) => {},
+  changePassword: async (_currentPassword: string, _newPassword: string) => {},
 });
 
 export default AuthContext;

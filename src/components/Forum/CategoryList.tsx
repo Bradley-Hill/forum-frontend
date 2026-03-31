@@ -18,8 +18,12 @@ const CategoryList: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-          const categories = await getCategoriesApi();
-          setCategories(categories);
+        const categories = await getCategoriesApi();
+        setCategories(categories);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load categories",
+        );
       } finally {
         setLoading(false);
       }
@@ -61,9 +65,7 @@ const CategoryList: React.FC = () => {
         <div key={category.id} className="category-card">
           <div className="category-card-header">
             <h2 className="category-card-title">
-              <Link to={`/threads/${category.slug}`}>
-                {category.name}
-              </Link>
+              <Link to={`/threads/${category.slug}`}>{category.name}</Link>
             </h2>
           </div>
           <p className="category-card-description">{category.description}</p>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import "./Threads.scss";
 import ThreadList from "../components/Forum/ThreadList";
 import ThreadEditor from "../components/Forum/ThreadEditor";
 import Modal from "../components/Shared/Modal";
@@ -20,7 +21,7 @@ function Threads() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+      <div className="threads-header">
         <h1>Threads</h1>
         <Button
           onClick={() => setIsThreadModalOpen(true)}

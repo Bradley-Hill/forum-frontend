@@ -1,14 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import Button from "../components/Shared/Button";
+import { Link } from "react-router-dom";
 import "./Unauthorized.scss";
 
 function Unauthorized() {
-  const navigate = useNavigate();
-
-  const handleGoHome = () => {
-    navigate("/");
-  };
-
   return (
     <div className="unauthorized-container">
       <div className="unauthorized-content">
@@ -19,9 +12,7 @@ function Unauthorized() {
         <p className="unauthorized-description">
           If you believe this is a mistake, please contact an administrator.
         </p>
-        <Button onClick={handleGoHome} variant="primary">
-          Go to Home
-        </Button>
+        <Link to="/" className="btn btn--primary btn--medium">Go to Forum</Link>
       </div>
     </div>
   );

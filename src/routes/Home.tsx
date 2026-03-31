@@ -18,7 +18,7 @@ function Home() {
     "medium",
   );
   const [showErrorAlert, setShowErrorAlert] = useState(true);
-  const [showApiError, setShowApiError] = useState(true);
+  const [showApiError, _setShowApiError] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 25;

@@ -13,8 +13,7 @@ import type {
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 import { fetchWithAuth } from "../utils/fetchWithAuth";
 
-// const API_BASE_URL = "https://api.bradley-hill.com/api"; // Production
-const API_BASE_URL = "http://localhost:3000/api"; // Development
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function getThreadsApi(
   id: string,

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useAuth } from "../../hooks/useAuth";
 import "./Header.scss";
@@ -41,62 +42,62 @@ const Header: React.FC = () => {
             </a>
           </li>
           <li className="navbarItem">
-            <a
+            <Link
               className="navLink"
-              href="/"
+              to="/"
               onClick={() => setIsOpen(false)}
               aria-label="Go to Forum"
             >
               Forum
-            </a>
+            </Link>
           </li>
           {isAuthenticated && (
             <>
               <li className="navbarItem">
-                <a
+                <Link
                   className="navLink"
-                  href="/profile"
+                  to="/profile"
                   onClick={() => setIsOpen(false)}
                   aria-label="Go to Profile"
                 >
                   Profile
-                </a>
+                </Link>
               </li>
               {user?.role === "admin" && (
                 <li className="navbarItem">
-                  <a
+                  <Link
                     className="navLink"
-                    href="/admin"
+                    to="/admin"
                     onClick={() => setIsOpen(false)}
                     aria-label="Go to Admin"
                   >
                     Admin
-                  </a>
+                  </Link>
                 </li>
               )}
               <li className="navbarItem">
-                <a
+                <Link
                   className="navLink"
-                  href="/logout"
+                  to="/logout"
                   onClick={() => setIsOpen(false)}
                   aria-label="Go to Logout"
                 >
                   Logout
-                </a>
+                </Link>
               </li>
             </>
           )}
           {!isAuthenticated && (
             <>
               <li className="navbarItem">
-                <a
+                <Link
                   className="navLink"
-                  href="/login"
+                  to="/login"
                   onClick={() => setIsOpen(false)}
                   aria-label="Go to Login"
                 >
                   Login
-                </a>
+                </Link>
               </li>
             </>
           )}
