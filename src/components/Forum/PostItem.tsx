@@ -71,8 +71,8 @@ const PostItem: React.FC<PostItemProps> = ({
 
       {canModify && (
         <div className="post-footer">
-          <Button variant="secondary" onClick={() => onEdit?.(post)}>Edit</Button>
-          <Button variant="danger" onClick={() => onDelete?.(post)}>Delete</Button>
+          <Button variant="secondary" aria-label={`Edit post #${postNumber}`} onClick={() => onEdit?.(post)}>Edit</Button>
+          <Button variant="danger" aria-label={`Delete post #${postNumber}`} onClick={() => onDelete?.(post)}>Delete</Button>
         </div>
       )}
     </div>

@@ -87,7 +87,7 @@ const Pagination: React.FC<PaginationProps> = ({
           {pageNumbers.map((pageNum, index) => {
             if (pageNum === '...') {
               return (
-                <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+                <span key={`ellipsis-${index}`} className="pagination-ellipsis" aria-hidden="true">
                   ...
                 </span>
               );
@@ -109,6 +109,8 @@ const Pagination: React.FC<PaginationProps> = ({
                 variant={isCurrentPage ? 'primary' : 'secondary'}
                 size="small"
                 type="button"
+                aria-current={isCurrentPage ? 'page' : undefined}
+                aria-label={`Page ${page}`}
               >
                 {page}
               </Button>

@@ -29,7 +29,7 @@ const RegisterForm: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated && showSuccess) {
       const timer = setTimeout(() => {
-        navigate("/categories");
+        navigate("/");
       }, 2000);
       return () => clearTimeout(timer);
     }

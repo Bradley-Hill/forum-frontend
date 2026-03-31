@@ -1,4 +1,5 @@
 import CategoryManagement from "./CategoryManagement";
+import ThreadManagement from "./ThreadManagement";
 import "./AdminPanel.scss";
 
 function AdminPanel() {
@@ -6,6 +7,9 @@ function AdminPanel() {
     <div className="admin-panel">
       <div className="admin-panel-section">
         <CategoryManagement />
+      </div>
+      <div className="admin-panel-section">
+        <ThreadManagement />
       </div>
     </div>
   );

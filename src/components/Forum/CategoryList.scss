@@ -27,17 +27,20 @@
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: vars.$color-text-main;
-  cursor: pointer;
-  transition: color 0.2s ease;
 
-  &:hover {
-    color: vars.$color-link-hover;
-  }
+  a {
+    color: vars.$color-text-main;
+    text-decoration: none;
+    transition: color 0.2s ease;
 
-  &:focus-visible {
-    outline: 2px solid vars.$color-focus-outline;
-    outline-offset: 2px;
+    &:hover {
+      color: vars.$color-link-hover;
+    }
+
+    &:focus-visible {
+      outline: 2px solid vars.$color-focus-outline;
+      outline-offset: 2px;
+    }
   }
 }
 

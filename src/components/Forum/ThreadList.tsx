@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCategoryThreadsApi } from "../../api/categoryApi";
 import { updateThreadApi, deleteThreadApi } from "../../api/threadApi";
 import { useAuth } from "../../hooks/useAuth";
@@ -17,7 +17,6 @@ interface ThreadListProps {
 }
 
 const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
-  const navigate = useNavigate();
   const { user, csrfToken } = useAuth();
   const [data, setData] = useState<categoryThreadsResponse["data"] | null>(
     null,
@@ -72,10 +71,6 @@ const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleThreadClick = (threadId: string) => {
-    navigate(`/post/${threadId}`);
   };
 
   const handlePageChange = (page: number) => {
@@ -160,24 +155,18 @@ const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
         {data.threads.map((thread) => (
           <div key={thread.id} className="thread-row">
             <div className="thread-col-title">
-              <h3
-                className="thread-title"
-                onClick={() => handleThreadClick(thread.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleThreadClick(thread.id);
-                  }
-                }}
-              >
-                {thread.title}
+              <h3 className="thread-title">
+                <Link to={`/post/${thread.id}`}>{thread.title}</Link>
               </h3>
               {thread.is_sticky && (
-                <span className="thread-badge sticky">📌 Sticky</span>
+                <span className="thread-badge sticky">
+                  <span aria-hidden="true">📌 </span>Sticky
+                </span>
               )}
               {thread.is_locked && (
-                <span className="thread-badge locked">🔒 Locked</span>
+                <span className="thread-badge locked">
+                  <span aria-hidden="true">🔒 </span>Locked
+                </span>
               )}
               {canModifyThread(thread) && (
                 <div className="thread-actions">
@@ -185,6 +174,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
                     variant="secondary"
                     size="small"
                     className="thread-action-btn"
+                    aria-label={`Edit thread: ${thread.title}`}
                     onClick={() => openEditModal(thread)}
                   >
                     Edit
@@ -193,6 +183,7 @@ const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
                     variant="danger"
                     size="small"
                     className="thread-action-btn thread-action-btn--danger"
+                    aria-label={`Delete thread: ${thread.title}`}
                     onClick={() => setDeletingThread(thread)}
                   >
                     Delete
@@ -200,7 +191,14 @@ const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
                 </div>
               )}
             </div>
-            <div className="thread-col-author"><Link to={`/users/${thread.author.username}`} className="author-link">{thread.author.username}</Link></div>
+            <div className="thread-col-author">
+              <Link
+                to={`/users/${thread.author.username}`}
+                className="author-link"
+              >
+                {thread.author.username}
+              </Link>
+            </div>
             <div className="thread-col-replies">{thread.reply_count}</div>
             <div className="thread-col-date">
               {new Date(thread.created_at).toLocaleDateString()}

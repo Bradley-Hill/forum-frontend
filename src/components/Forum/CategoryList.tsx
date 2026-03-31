@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCategoriesApi } from "../../api/categoryApi";
 import Loader from "../Shared/Loader";
 import ErrorMessage from "../Shared/ErrorMessage";
@@ -7,7 +7,6 @@ import type { categoriesListResponse } from "../../types/api";
 import "./CategoryList.scss";
 
 const CategoryList: React.FC = () => {
-  const navigate = useNavigate();
   const [categories, setCategories] = useState<
     categoriesListResponse["data"] | null
   >(null);
@@ -44,10 +43,6 @@ const CategoryList: React.FC = () => {
     }
   };
 
-  const handleCategoryClick = (categorySlug: string) => {
-    navigate(`/threads/${categorySlug}`);
-  };
-
   if (loading) {
     return <Loader size="medium" message="Loading categories..." />;
   }
@@ -65,18 +60,10 @@ const CategoryList: React.FC = () => {
       {categories.map((category) => (
         <div key={category.id} className="category-card">
           <div className="category-card-header">
-            <h2 
-              className="category-card-title"
-              onClick={() => handleCategoryClick(category.slug)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleCategoryClick(category.slug);
-                }
-              }}
-            >
-              {category.name}
+            <h2 className="category-card-title">
+              <Link to={`/threads/${category.slug}`}>
+                {category.name}
+              </Link>
             </h2>
           </div>
           <p className="category-card-description">{category.description}</p>

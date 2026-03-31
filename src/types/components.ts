@@ -8,6 +8,8 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;
+  "aria-label"?: string;
+  "aria-current"?: "page" | "step" | "location" | "date" | "time" | "true" | "false";
 }
 
 export interface TextInputProps {

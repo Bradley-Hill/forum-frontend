@@ -22,23 +22,25 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
     <table className="category-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Slug</th>
-          <th>Description</th>
-          <th>Actions</th>
+          <th scope="col">Name</th>
+          <th scope="col">Slug</th>
+          <th scope="col">Description</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         {categories.map((cat) => (
           <tr key={cat.id}>
-            <td>{cat.name}</td>
-            <td className="category-slug">{cat.slug}</td>
-            <td>{cat.description}</td>
-            <td className="category-actions">
-              <Button variant="secondary" onClick={() => onEdit(cat)}>
+            <td data-label="Name">{cat.name}</td>
+            <td data-label="Slug" className="category-slug">
+              {cat.slug}
+            </td>
+            <td data-label="Description">{cat.description}</td>
+            <td data-label="Actions" className="category-actions">
+              <Button variant="secondary" aria-label={`Edit category: ${cat.name}`} onClick={() => onEdit(cat)}>
                 Edit
               </Button>
-              <Button variant="danger" onClick={() => onDelete(cat)}>
+              <Button variant="danger" aria-label={`Delete category: ${cat.name}`} onClick={() => onDelete(cat)}>
                 Delete
               </Button>
             </td>
