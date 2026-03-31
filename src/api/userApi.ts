@@ -122,11 +122,10 @@ export async function deleteUserApi(csrfToken?: string): Promise<void> {
     },
     10000,
   );
-  const json = (await response.json()) as {
-    error?: ErrorResponse;
-  };
   if (!response.ok) {
+    const json = (await response.json()) as {
+      error?: ErrorResponse;
+    };
     throw new Error(json.error?.message || "Failed to delete user");
   }
-  return;
 }

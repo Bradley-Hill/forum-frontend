@@ -36,8 +36,7 @@ function Profile() {
 
       {error && (
         <ErrorMessage
-          message="Update failed"
-          details={error}
+          message={error}
           onRetry={() => {}}
         />
       )}
