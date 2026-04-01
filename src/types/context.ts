@@ -5,6 +5,7 @@ export interface AuthContextType {
   user: User | null;
   csrfToken: string | null;
   loading: boolean;
+  loadingMessage: string;
   error: string | null;
   isInitialized: boolean;
   login: (username: string, password: string) => Promise<void>;

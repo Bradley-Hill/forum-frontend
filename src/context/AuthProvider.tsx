@@ -10,6 +10,7 @@ import {
 import { getMeApi, updateUserApi, deleteUserApi } from "../api/userApi";
 import { isRateLimitAllowed } from "../utils/rateLimit";
 import { registerTokenRefreshHandler } from "../utils/fetchWithAuth";
+import { retryWithBackoff } from "../utils/retryWithBackoff";
 
 const getErrorMessage = (err: unknown, defaultMessage: string): string => {
   if (err instanceof Error) return err.message;
@@ -28,6 +29,9 @@ const isValidUpdateUserRequest = (data: unknown): data is updateUserRequest => {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState(
+    "Loading your session...",
+  );
   const [error, setError] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [csrfToken, setCsrfToken] = useState<string | null>(null);
@@ -95,7 +99,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refresh = async (): Promise<string> => {
     try {
-      const response = await refreshTokenApi();
+      const response = await retryWithBackoff(
+        () => refreshTokenApi(),
+        3,
+        2000,
+        (attempt) =>
+          setLoadingMessage(`Server is warming up... (Attempt ${attempt})`),
+      );
       setCsrfToken(response.csrfToken);
       return response.csrfToken;
     } catch {
@@ -126,11 +136,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const changePassword = async (currentPassword: string, newPassword: string) => {
+  const changePassword = async (
+    currentPassword: string,
+    newPassword: string,
+  ) => {
     if (!isRateLimitAllowed("changePassword", 2000)) {
       throw new Error("Please wait before changing your password again");
     }
-    if (!user || !csrfToken) throw new Error("Session expired, please log in again");
+    if (!user || !csrfToken)
+      throw new Error("Session expired, please log in again");
     await updateUserApi({ currentPassword, newPassword }, csrfToken);
   };
 
@@ -163,13 +177,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const initializeAuth = async () => {
       try {
+        const refreshResponse = await retryWithBackoff(
+          () => refreshTokenApi(),
+          3,
+          2000,
+          (attempt) =>
+            setLoadingMessage(`Loading your session... (Attempt ${attempt})`),
+        );
+        setCsrfToken(refreshResponse.csrfToken);
         const userResponse = await getMeApi();
         setUser(userResponse);
-        const csrfFromCookie = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("csrfToken="))
-          ?.split("=")[1];
-        if (csrfFromCookie) setCsrfToken(csrfFromCookie);
       } catch (err) {
         console.debug("Auth initialization failed:", err);
       } finally {
@@ -189,6 +206,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         csrfToken,
         loading,
+        loadingMessage,
         error,
         isInitialized,
         login,

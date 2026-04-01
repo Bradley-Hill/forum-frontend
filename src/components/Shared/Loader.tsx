@@ -1,6 +1,7 @@
 import type { LoaderProps } from '../../types/components';
-import React from 'react';
+import React, { use } from 'react';
 import './Loader.scss';
+import { useAuth } from '../../hooks/useAuth';
 
 const Loader: React.FC<LoaderProps> = ({
   size = 'medium',
@@ -8,6 +9,7 @@ const Loader: React.FC<LoaderProps> = ({
   fullScreen = false,
   className = '',
 }) => {
+  const {loadingMessage} = useAuth();
   const wrapperClasses = [
     'loader-wrapper',
     fullScreen ? 'loader-wrapper--full-screen' : '',
@@ -32,7 +34,7 @@ const Loader: React.FC<LoaderProps> = ({
         <div className="loader-dot"></div>
         <div className="loader-dot"></div>
       </div>
-      {message && <p className="loader-message">{message}</p>}
+      <p className="loader-message">{message || loadingMessage}</p>
     </div>
   );
 };
