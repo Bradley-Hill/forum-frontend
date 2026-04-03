@@ -1,13 +1,8 @@
 import Button from "../Shared/Button";
 import type { categoriesListResponse } from "../../types/api";
+import type { CategoryTableProps } from "../../types/featureComponents";
 
 type Category = categoriesListResponse["data"][number];
-
-interface CategoryTableProps {
-  categories: Category[];
-  onEdit: (category: Category) => void;
-  onDelete: (category: Category) => void;
-}
 
 function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
   if (categories.length === 0) {
@@ -37,10 +32,18 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
             </td>
             <td data-label="Description">{cat.description}</td>
             <td data-label="Actions" className="category-actions">
-              <Button variant="secondary" aria-label={`Edit category: ${cat.name}`} onClick={() => onEdit(cat)}>
+              <Button
+                variant="secondary"
+                aria-label={`Edit category: ${cat.name}`}
+                onClick={() => onEdit(cat)}
+              >
                 Edit
               </Button>
-              <Button variant="danger" aria-label={`Delete category: ${cat.name}`} onClick={() => onDelete(cat)}>
+              <Button
+                variant="danger"
+                aria-label={`Delete category: ${cat.name}`}
+                onClick={() => onDelete(cat)}
+              >
                 Delete
               </Button>
             </td>

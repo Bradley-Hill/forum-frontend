@@ -10,11 +10,8 @@ import Pagination from "../Shared/Pagination";
 import Modal from "../Shared/Modal";
 import Button from "../Shared/Button";
 import type { threadsApiResponse, Post } from "../../types/api";
+import type { PostListProps } from "../../types/featureComponents";
 import "./PostList.scss";
-
-interface PostListProps {
-  threadId: string;
-}
 
 const PostList: React.FC<PostListProps> = ({ threadId }) => {
   const [data, setData] = useState<threadsApiResponse["data"] | null>(null);

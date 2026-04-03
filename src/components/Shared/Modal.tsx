@@ -1,15 +1,15 @@
-import type { ModalProps } from '../../types/components';
-import { useEffect, useRef, useCallback } from 'react';
-import { MdClose } from 'react-icons/md';
-import './Modal.scss';
+import type { ModalProps } from "../../types/sharedComponents";
+import { useEffect, useRef, useCallback } from "react";
+import { MdClose } from "react-icons/md";
+import "./Modal.scss";
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
-  size = 'medium',
+  size = "medium",
   children,
-  className = '',
+  className = "",
   closeOnBackdropClick = true,
   closeOnEscapeKey = true,
 }) => {
@@ -20,13 +20,13 @@ const Modal: React.FC<ModalProps> = ({
     if (!isOpen || !closeOnEscapeKey) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, closeOnEscapeKey, onClose]);
 
   // Trap focus inside modal and restore on close
@@ -56,14 +56,14 @@ const Modal: React.FC<ModalProps> = ({
         onClose();
       }
     },
-    [closeOnBackdropClick, onClose]
+    [closeOnBackdropClick, onClose],
   );
 
   if (!isOpen) return null;
 
-  const modalClasses = ['modal', `modal--${size}`, className]
+  const modalClasses = ["modal", `modal--${size}`, className]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 
   return (
     <div className="modal-overlay" onClick={handleBackdropClick}>
@@ -72,7 +72,7 @@ const Modal: React.FC<ModalProps> = ({
         className={modalClasses}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={title ? 'modal-title' : undefined}
+        aria-labelledby={title ? "modal-title" : undefined}
         tabIndex={-1}
       >
         <button
@@ -84,7 +84,11 @@ const Modal: React.FC<ModalProps> = ({
           <MdClose />
         </button>
 
-        {title && <h2 id="modal-title" className="modal-title">{title}</h2>}
+        {title && (
+          <h2 id="modal-title" className="modal-title">
+            {title}
+          </h2>
+        )}
 
         {children}
       </div>

@@ -1,4 +1,4 @@
-import type { PasswordInputProps } from "../../types/components";
+import type { PasswordInputProps } from "../../types/sharedComponents";
 import { useState } from "react";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Button from "./Button";

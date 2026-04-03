@@ -13,13 +13,8 @@ import type {
   createThreadRequest,
   categoriesListResponse,
 } from "../../types/api";
+import type { ThreadEditorProps } from "../../types/featureComponents";
 import "./ThreadEditor.scss";
-
-interface ThreadEditorProps {
-  onThreadCreated?: () => void;
-  onClose?: () => void;
-  categorySlug?: string;
-}
 
 const ThreadEditor: React.FC<ThreadEditorProps> = ({
   onThreadCreated,

@@ -1,4 +1,4 @@
-import type { AlertProps } from '../../types/components';
+import type { AlertProps } from '../../types/sharedComponents';
 import { useState, useEffect } from 'react';
 import { MdClose, MdCheckCircle, MdError, MdWarning, MdInfo } from 'react-icons/md';
 import './Alert.scss';

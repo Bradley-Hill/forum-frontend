@@ -1,17 +1,9 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import type { Post } from "../../types/api";
+import type { PostItemProps } from "../../types/featureComponents";
 import Button from "../Shared/Button";
 import MarkdownDisplay from "../Shared/MarkdownDisplay";
 import "./PostItem.scss";
-
-interface PostItemProps {
-  post: Post;
-  postNumber: number;
-  canModify?: boolean;
-  onEdit?: (post: Post) => void;
-  onDelete?: (post: Post) => void;
-}
 
 const PostItem: React.FC<PostItemProps> = ({
   post,
@@ -47,7 +39,8 @@ const PostItem: React.FC<PostItemProps> = ({
                 day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-              })})
+              })}
+              )
             </span>
           )}
         </div>
@@ -61,7 +54,12 @@ const PostItem: React.FC<PostItemProps> = ({
             </span>
           </div>
           <div className="author-info">
-            <Link to={`/users/${post.author.username}`} className="author-link author-username">{post.author.username}</Link>
+            <Link
+              to={`/users/${post.author.username}`}
+              className="author-link author-username"
+            >
+              {post.author.username}
+            </Link>
           </div>
         </div>
 
@@ -72,8 +70,20 @@ const PostItem: React.FC<PostItemProps> = ({
 
       {canModify && (
         <div className="post-footer">
-          <Button variant="secondary" aria-label={`Edit post #${postNumber}`} onClick={() => onEdit?.(post)}>Edit</Button>
-          <Button variant="danger" aria-label={`Delete post #${postNumber}`} onClick={() => onDelete?.(post)}>Delete</Button>
+          <Button
+            variant="secondary"
+            aria-label={`Edit post #${postNumber}`}
+            onClick={() => onEdit?.(post)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="danger"
+            aria-label={`Delete post #${postNumber}`}
+            onClick={() => onDelete?.(post)}
+          >
+            Delete
+          </Button>
         </div>
       )}
     </div>

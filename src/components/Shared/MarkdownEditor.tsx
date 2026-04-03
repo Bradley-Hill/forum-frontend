@@ -8,7 +8,7 @@ import {
   MdInsertLink,
 } from "react-icons/md";
 import MarkdownDisplay from "./MarkdownDisplay";
-import type { MarkdownEditorProps } from "../../types/components";
+import type { MarkdownEditorProps } from "../../types/sharedComponents";
 import "./MarkdownEditor.scss";
 
 const MarkdownEditor: React.FC<MarkdownEditorProps> = ({

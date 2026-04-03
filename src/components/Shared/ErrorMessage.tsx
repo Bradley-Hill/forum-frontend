@@ -1,7 +1,7 @@
-import type { ErrorMessageProps } from '../../types/components';
-import { useState } from 'react';
-import { MdError, MdExpandMore, MdExpandLess, MdRefresh } from 'react-icons/md';
-import './ErrorMessage.scss';
+import type { ErrorMessageProps } from "../../types/sharedComponents";
+import { useState } from "react";
+import { MdError, MdExpandMore, MdExpandLess, MdRefresh } from "react-icons/md";
+import "./ErrorMessage.scss";
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({
   code,
@@ -9,13 +9,13 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
   details,
   onRetry,
   showDetails: initialShowDetails = false,
-  className = '',
+  className = "",
 }) => {
   const [showDetails, setShowDetails] = useState(initialShowDetails);
 
-  const classes = ['error-message', className].filter(Boolean).join(' ');
+  const classes = ["error-message", className].filter(Boolean).join(" ");
 
-  const isTimeout = code === 'GATEWAY_TIMEOUT';
+  const isTimeout = code === "GATEWAY_TIMEOUT";
 
   return (
     <div className={classes} role="alert" aria-atomic="true">
@@ -24,7 +24,9 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
         <div className="error-message-content">
           <h3 className="error-message-title">{message}</h3>
           {code && (
-            <p className="error-message-code">Error code: <code>{code}</code></p>
+            <p className="error-message-code">
+              Error code: <code>{code}</code>
+            </p>
           )}
         </div>
       </div>
@@ -39,7 +41,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
             type="button"
           >
             {showDetails ? <MdExpandLess /> : <MdExpandMore />}
-            <span>{showDetails ? 'Hide' : 'Show'} details</span>
+            <span>{showDetails ? "Hide" : "Show"} details</span>
           </button>
 
           {showDetails && (
@@ -52,7 +54,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
 
       <div className="error-message-actions">
         {isTimeout ? (
-          <button 
+          <button
             className="error-message-refresh"
             onClick={() => window.location.reload()}
             type="button"
@@ -62,7 +64,11 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
           </button>
         ) : (
           onRetry && (
-            <button className="error-message-retry" onClick={onRetry} type="button">
+            <button
+              className="error-message-retry"
+              onClick={onRetry}
+              type="button"
+            >
               Try again
             </button>
           )

@@ -1,8 +1,8 @@
-import type { PaginationProps } from '../../types/components';
-import { useMemo } from 'react';
-import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
-import Button from './Button';
-import './Pagination.scss';
+import type { PaginationProps } from "../../types/sharedComponents";
+import { useMemo } from "react";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import Button from "./Button";
+import "./Pagination.scss";
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -10,7 +10,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   totalItems,
   pageSize,
-  className = '',
+  className = "",
 }) => {
   if (totalPages <= 1) return null;
 
@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
       const end = Math.min(totalPages - 1, currentPage + 1);
 
       if (start > 2) {
-        pages.push('...');
+        pages.push("...");
       }
 
       for (let i = start; i <= end; i++) {
@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({
       }
 
       if (end < totalPages - 1) {
-        pages.push('...');
+        pages.push("...");
       }
 
       pages.push(totalPages);
@@ -56,11 +56,11 @@ const Pagination: React.FC<PaginationProps> = ({
       <div className="pagination-info">
         {totalItems !== undefined && pageSize !== undefined ? (
           <span>
-            Showing{' '}
+            Showing{" "}
             <strong>
               {(currentPage - 1) * pageSize + 1}-
               {Math.min(currentPage * pageSize, totalItems)}
-            </strong>{' '}
+            </strong>{" "}
             of <strong>{totalItems}</strong>
           </span>
         ) : (
@@ -85,9 +85,13 @@ const Pagination: React.FC<PaginationProps> = ({
 
         <div className="pagination-numbers">
           {pageNumbers.map((pageNum, index) => {
-            if (pageNum === '...') {
+            if (pageNum === "...") {
               return (
-                <span key={`ellipsis-${index}`} className="pagination-ellipsis" aria-hidden="true">
+                <span
+                  key={`ellipsis-${index}`}
+                  className="pagination-ellipsis"
+                  aria-hidden="true"
+                >
                   ...
                 </span>
               );
@@ -103,13 +107,13 @@ const Pagination: React.FC<PaginationProps> = ({
             return (
               <Button
                 key={page}
-                className={`pagination-number ${isCurrentPage ? 'pagination-number--active' : ''}`}
+                className={`pagination-number ${isCurrentPage ? "pagination-number--active" : ""}`}
                 onClick={() => onPageChange(page)}
                 disabled={isCurrentPage}
-                variant={isCurrentPage ? 'primary' : 'secondary'}
+                variant={isCurrentPage ? "primary" : "secondary"}
                 size="small"
                 type="button"
-                aria-current={isCurrentPage ? 'page' : undefined}
+                aria-current={isCurrentPage ? "page" : undefined}
                 aria-label={`Page ${page}`}
               >
                 {page}

@@ -1,4 +1,4 @@
-import type { ButtonProps } from "../../types/components";
+import type { ButtonProps } from "../../types/sharedComponents";
 
 import React from "react";
 import "./Button.scss";

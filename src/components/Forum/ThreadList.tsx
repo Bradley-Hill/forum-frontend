@@ -10,11 +10,8 @@ import Modal from "../Shared/Modal";
 import Button from "../Shared/Button";
 import TextInput from "../Shared/TextInput";
 import type { categoryThreadsResponse, Thread } from "../../types/api";
+import type { ThreadListProps } from "../../types/featureComponents";
 import "./ThreadList.scss";
-
-interface ThreadListProps {
-  categorySlug: string;
-}
 
 const ThreadList: React.FC<ThreadListProps> = ({ categorySlug }) => {
   const { user, csrfToken } = useAuth();

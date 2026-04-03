@@ -1,4 +1,4 @@
-import type { TextInputProps } from '../../types/components';
+import type { TextInputProps } from '../../types/sharedComponents';
 import './TextInput.scss';
 
 const TextInput: React.FC<TextInputProps> = ({

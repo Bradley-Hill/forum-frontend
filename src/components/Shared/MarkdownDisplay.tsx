@@ -1,11 +1,14 @@
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import DOMPurify from 'dompurify';
-import type { MarkdownDisplayProps } from '../../types/components';
-import './MarkdownDisplay.scss';
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import DOMPurify from "dompurify";
+import type { MarkdownDisplayProps } from "../../types/sharedComponents";
+import "./MarkdownDisplay.scss";
 
-const MarkdownDisplay: React.FC<MarkdownDisplayProps> = ({ content, className = '' }) => {
+const MarkdownDisplay: React.FC<MarkdownDisplayProps> = ({
+  content,
+  className = "",
+}) => {
   const sanitizedContent = DOMPurify.sanitize(content, {
     ALLOWED_TAGS: [],
     ALLOWED_ATTR: [],

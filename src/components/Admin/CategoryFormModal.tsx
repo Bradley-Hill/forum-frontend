@@ -2,17 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "../Shared/Modal";
 import TextInput from "../Shared/TextInput";
 import Button from "../Shared/Button";
-
-interface CategoryFormModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (name: string, description: string) => Promise<void>;
-  loading: boolean;
-  title: string;
-  submitLabel: string;
-  initialName?: string;
-  initialDescription?: string;
-}
+import type { CategoryFormModalProps } from "../../types/featureComponents";
 
 function CategoryFormModal({
   isOpen,

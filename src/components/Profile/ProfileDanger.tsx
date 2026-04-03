@@ -2,12 +2,8 @@ import { useState } from "react";
 import Button from "../Shared/Button";
 import Modal from "../Shared/Modal";
 import ProfileChangePassword from "./ProfileChangePassword";
+import type { ProfileDangerProps } from "../../types/featureComponents";
 import "./ProfileDanger.scss";
-
-interface ProfileDangerProps {
-  loading: boolean;
-  onDelete: () => void;
-}
 
 function ProfileDanger({ loading, onDelete }: ProfileDangerProps) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -24,7 +20,11 @@ function ProfileDanger({ loading, onDelete }: ProfileDangerProps) {
             be undone.
           </p>
         </div>
-        <Button variant="danger" onClick={() => setShowConfirm(true)} disabled={loading}>
+        <Button
+          variant="danger"
+          onClick={() => setShowConfirm(true)}
+          disabled={loading}
+        >
           Delete Account
         </Button>
       </div>
@@ -37,9 +37,16 @@ function ProfileDanger({ loading, onDelete }: ProfileDangerProps) {
       >
         <div className="modal-content">
           <p>Are you sure you want to permanently delete your account?</p>
-          <p>All your threads and posts will also be deleted. <strong>This cannot be undone.</strong></p>
+          <p>
+            All your threads and posts will also be deleted.{" "}
+            <strong>This cannot be undone.</strong>
+          </p>
           <div className="modal-actions">
-            <Button variant="secondary" onClick={() => setShowConfirm(false)} disabled={loading}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowConfirm(false)}
+              disabled={loading}
+            >
               Cancel
             </Button>
             <Button

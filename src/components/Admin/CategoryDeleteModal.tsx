@@ -1,15 +1,9 @@
 import Modal from "../Shared/Modal";
 import Button from "../Shared/Button";
 import type { categoriesListResponse } from "../../types/api";
+import type { CategoryDeleteModalProps } from "../../types/featureComponents";
 
 type Category = categoriesListResponse["data"][number];
-
-interface CategoryDeleteModalProps {
-  category: Category | null;
-  onClose: () => void;
-  onConfirm: () => Promise<void>;
-  loading: boolean;
-}
 
 function CategoryDeleteModal({
   category,

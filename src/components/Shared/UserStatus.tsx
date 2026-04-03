@@ -1,7 +1,8 @@
 import { useAuth } from "../../hooks/useAuth";
+import type { UserStatusProps } from "../../types/featureComponents";
 import "./UserStatus.scss";
 
-const UserStatus: React.FC = () => {
+const UserStatus: React.FC<UserStatusProps> = () => {
   const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated || !user) {

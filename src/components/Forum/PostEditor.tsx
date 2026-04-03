@@ -6,12 +6,8 @@ import Alert from "../Shared/Alert";
 import Form from "../Shared/Form";
 import MarkdownEditor from "../Shared/MarkdownEditor";
 import type { postCreateRequest } from "../../types/api";
+import type { PostEditorProps } from "../../types/featureComponents";
 import "./PostEditor.scss";
-
-interface PostEditorProps {
-  threadId: string;
-  onPostCreated?: () => void;
-}
 
 const PostEditor: React.FC<PostEditorProps> = ({ threadId, onPostCreated }) => {
   const { user, csrfToken } = useAuth();

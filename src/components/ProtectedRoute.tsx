@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import type { ProtectedRouteProps } from "../types/components";
+import type { ProtectedRouteProps } from "../types/sharedComponents";
 import { useAuth } from "../hooks/useAuth";
 import Loader from "./Shared/Loader";
 import "./ProtectedRoute.scss";

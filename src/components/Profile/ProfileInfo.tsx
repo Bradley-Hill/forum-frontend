@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
 import type { User } from "../../types/api";
+import type { ProfileInfoProps } from "../../types/featureComponents";
 import TextInput from "../Shared/TextInput";
 import Button from "../Shared/Button";
 import Alert from "../Shared/Alert";
 import Modal from "../Shared/Modal";
 import "./ProfileInfo.scss";
-
-interface ProfileInfoProps {
-  user: User;
-  loading: boolean;
-  onUpdate: (data: { email: string }) => Promise<void>;
-}
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -72,7 +67,8 @@ function ProfileInfo({ user, loading, onUpdate }: ProfileInfoProps) {
     }
   };
 
-  const isEmailValid = email.trim() && isValidEmail(email.trim()) && email.trim() !== user?.email;
+  const isEmailValid =
+    email.trim() && isValidEmail(email.trim()) && email.trim() !== user?.email;
 
   return (
     <>
@@ -100,9 +96,7 @@ function ProfileInfo({ user, loading, onUpdate }: ProfileInfoProps) {
             onChange={handleEmailChange}
             required
           />
-          {emailError && (
-            <p className="email-error">{emailError}</p>
-          )}
+          {emailError && <p className="email-error">{emailError}</p>}
         </div>
 
         <div className="profile-actions">
@@ -124,9 +118,11 @@ function ProfileInfo({ user, loading, onUpdate }: ProfileInfoProps) {
       >
         <div className="modal-content">
           <p>Are you sure you want to change your email to:</p>
-          <p className="new-email"><strong>{newEmail}</strong></p>
+          <p className="new-email">
+            <strong>{newEmail}</strong>
+          </p>
           <p>Please verify this is correct before confirming.</p>
-          
+
           <div className="modal-actions">
             <Button
               variant="secondary"
