@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import type { AuthFormFieldErrors } from "../../types/authForm";
 import { authFormReducer, initialAuthFormState } from "../../types/authFormReducer";
 import { validateEmail, validatePassword } from "../../utils/authFormValidation";
+import { ApiError } from "../../utils/apiErrors";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
@@ -50,9 +51,17 @@ const LoginForm: React.FC = () => {
       setShowSuccess(true);
       dispatch({ type: "RESET_FORM" });
     } catch (error) {
-      setApiError({
-        message: error instanceof Error ? error.message : "Login failed",
-      });
+      if (error instanceof ApiError) {
+        setApiError({
+          code: error.code,
+          message: error.message,
+          details: error.details,
+        });
+      } else {
+        setApiError({
+          message: error instanceof Error ? error.message : "Login failed",
+        });
+      }
     }
   };
 
@@ -70,6 +79,7 @@ const LoginForm: React.FC = () => {
 
       {apiError && (
         <ErrorMessage
+          code={apiError.code}
           message={apiError.message}
           details={apiError.details}
           onRetry={() => setApiError(null)}

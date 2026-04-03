@@ -8,48 +8,79 @@ import type {
 } from "../types/api";
 import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 import { fetchWithAuth } from "../utils/fetchWithAuth";
+import { ApiError } from "../utils/apiErrors";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-export async function getMeApi(): Promise<getMeResponse["data"]> {
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/users/me`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    },
-    10000,
-  );
+async function handleApiResponse<T>(
+  response: Response,
+  defaultMessage: string,
+): Promise<T> {
   const json = (await response.json()) as {
-    data?: getMeResponse["data"];
+    data?: T;
     error?: ErrorResponse;
   };
+
   if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to fetch user profile");
+    const errorData = json.error || {
+      message: defaultMessage,
+      code: "UNKNOWN_ERROR",
+    };
+    throw new ApiError(
+      errorData.code || "UNKNOWN_ERROR",
+      errorData.message || defaultMessage,
+    );
   }
-  return json.data as getMeResponse["data"];
+
+  return json.data as T;
+}
+
+export async function getMeApi(): Promise<getMeResponse["data"]> {
+  try {
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/users/me`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      },
+      10000,
+    );
+    return await handleApiResponse<getMeResponse["data"]>(
+      response,
+      "Failed to fetch user profile",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to fetch user profile");
+  }
 }
 
 export async function getUserApi(username: string): Promise<getUserResponse> {
-  const response = await fetchWithTimeout(
-    `${API_BASE_URL}/users/${username}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    },
-    10000,
-  );
-  const json = (await response.json()) as {
-    data?: getUserResponse["data"];
-    error?: ErrorResponse;
-  };
-  if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to fetch user");
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/users/${username}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      },
+      10000,
+    );
+    const json = await handleApiResponse<getUserResponse["data"]>(
+      response,
+      "Failed to fetch user",
+    );
+    return { data: json } as getUserResponse;
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to fetch user");
   }
-  return json as getUserResponse;
 }
 
 export async function getUserThreadsApi(
@@ -57,74 +88,82 @@ export async function getUserThreadsApi(
   page: number = 1,
   pageSize: number = 10,
 ): Promise<getUserThreadsResponse["data"]> {
-  const response = await fetchWithTimeout(
-    `${API_BASE_URL}/users/${username}/threads?page=${page}&pageSize=${pageSize}`,
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    },
-    10000,
-  );
-  const json = (await response.json()) as {
-    data?: getUserThreadsResponse["data"];
-    error?: ErrorResponse;
-  };
-  if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to fetch user threads");
+  try {
+    const response = await fetchWithTimeout(
+      `${API_BASE_URL}/users/${username}/threads?page=${page}&pageSize=${pageSize}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      },
+      10000,
+    );
+    return await handleApiResponse<getUserThreadsResponse["data"]>(
+      response,
+      "Failed to fetch user threads",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to fetch user threads");
   }
-  return json.data as getUserThreadsResponse["data"];
 }
 
 export async function updateUserApi(
   request: updateUserRequest,
   csrfToken?: string,
 ): Promise<updateUserResponse["data"]> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/users/me`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify(request),
+        credentials: "include",
+      },
+      10000,
+    );
+    return await handleApiResponse<updateUserResponse["data"]>(
+      response,
+      "Failed to update user",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to update user");
   }
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/users/me`,
-    {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify(request),
-      credentials: "include",
-    },
-    10000,
-  );
-  const json = (await response.json()) as {
-    data?: updateUserResponse["data"];
-    error?: ErrorResponse;
-  };
-  if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to update user");
-  }
-  return json.data as updateUserResponse["data"];
 }
 
 export async function deleteUserApi(csrfToken?: string): Promise<void> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
-  }
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/users/me`,
-    {
-      method: "DELETE",
-      headers,
-      credentials: "include",
-    },
-    10000,
-  );
-  if (!response.ok) {
-    const json = (await response.json()) as {
-      error?: ErrorResponse;
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
     };
-    throw new Error(json.error?.message || "Failed to delete user");
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/users/me`,
+      {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      },
+      10000,
+    );
+    await handleApiResponse<void>(response, "Failed to delete user");
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to delete user");
   }
 }

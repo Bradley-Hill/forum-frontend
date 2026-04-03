@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { useAuth } from "../../hooks/useAuth";
+import UserStatus from "../Shared/UserStatus";
 import "./Header.scss";
 
 const Header: React.FC = () => {
@@ -102,6 +103,11 @@ const Header: React.FC = () => {
             </>
           )}
         </ul>
+        {isAuthenticated && (
+          <div className="navbar-user-status">
+            <UserStatus />
+          </div>
+        )}
       </nav>
     </header>
   );

@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Post } from "../../types/api";
 import Button from "../Shared/Button";
+import MarkdownDisplay from "../Shared/MarkdownDisplay";
 import "./PostItem.scss";
 
 interface PostItemProps {
@@ -65,7 +66,7 @@ const PostItem: React.FC<PostItemProps> = ({
         </div>
 
         <div className="post-content">
-          <p>{post.content}</p>
+          <MarkdownDisplay content={post.content} />
         </div>
       </div>
 

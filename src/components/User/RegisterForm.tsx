@@ -16,6 +16,7 @@ import {
   validateUsername,
   validatePasswordMatch,
 } from "../../utils/authFormValidation";
+import { ApiError } from "../../utils/apiErrors";
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
@@ -75,9 +76,17 @@ const RegisterForm: React.FC = () => {
       setShowSuccess(true);
       dispatch({ type: "RESET_FORM" });
     } catch (error) {
-      setApiError({
-        message: error instanceof Error ? error.message : "Registration failed",
-      });
+      if (error instanceof ApiError) {
+        setApiError({
+          code: error.code,
+          message: error.message,
+          details: error.details,
+        });
+      } else {
+        setApiError({
+          message: error instanceof Error ? error.message : "Registration failed",
+        });
+      }
     }
   };
 
@@ -101,6 +110,7 @@ const RegisterForm: React.FC = () => {
 
       {apiError && (
         <ErrorMessage
+          code={apiError.code}
           message={apiError.message}
           details={apiError.details}
           onRetry={() => setApiError(null)}

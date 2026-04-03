@@ -1,6 +1,6 @@
 import type { ErrorMessageProps } from '../../types/components';
 import { useState } from 'react';
-import { MdError, MdExpandMore, MdExpandLess } from 'react-icons/md';
+import { MdError, MdExpandMore, MdExpandLess, MdRefresh } from 'react-icons/md';
 import './ErrorMessage.scss';
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({
@@ -14,6 +14,8 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
   const [showDetails, setShowDetails] = useState(initialShowDetails);
 
   const classes = ['error-message', className].filter(Boolean).join(' ');
+
+  const isTimeout = code === 'GATEWAY_TIMEOUT';
 
   return (
     <div className={classes} role="alert" aria-atomic="true">
@@ -48,11 +50,24 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
         </div>
       )}
 
-      {onRetry && (
-        <button className="error-message-retry" onClick={onRetry} type="button">
-          Try again
-        </button>
-      )}
+      <div className="error-message-actions">
+        {isTimeout ? (
+          <button 
+            className="error-message-refresh"
+            onClick={() => window.location.reload()}
+            type="button"
+          >
+            <MdRefresh className="error-message-refresh-icon" />
+            Refresh Page
+          </button>
+        ) : (
+          onRetry && (
+            <button className="error-message-retry" onClick={onRetry} type="button">
+              Try again
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };

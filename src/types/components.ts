@@ -99,3 +99,16 @@ export interface ProtectedRouteProps {
   children: ReactNode;
   requiredRole?: "member" | "admin";
 }
+
+export interface MarkdownEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  showPreview?: boolean;
+}
+
+export interface MarkdownDisplayProps {
+  content: string;
+  className?: string;
+}

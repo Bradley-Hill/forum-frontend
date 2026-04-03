@@ -4,39 +4,65 @@ import type {
   ErrorResponse,
 } from "../types/api";
 import { fetchWithAuth } from "../utils/fetchWithAuth";
+import { ApiError } from "../utils/apiErrors";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+async function handleApiResponse<T>(
+  response: Response,
+  defaultMessage: string,
+): Promise<T> {
+  const json = (await response.json()) as {
+    data?: T;
+    error?: ErrorResponse;
+  };
+
+  if (!response.ok) {
+    const errorData = json.error || {
+      message: defaultMessage,
+      code: "UNKNOWN_ERROR",
+    };
+    throw new ApiError(
+      errorData.code || "UNKNOWN_ERROR",
+      errorData.message || defaultMessage,
+    );
+  }
+
+  return json.data as T;
+}
 
 export async function createPostApi(
   request: postCreateRequest,
   csrfToken?: string,
 ): Promise<postCreateResponse> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
-  }
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/posts`,
-    {
-      method: "POST",
-      headers,
-      body: JSON.stringify(request),
-      credentials: "include",
-    },
-    10000,
-  );
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/posts`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify(request),
+        credentials: "include",
+      },
+      10000,
+    );
 
-  const json = (await response.json()) as {
-    data?: postCreateResponse;
-    error?: ErrorResponse;
-  };
-  if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to create post");
+    return await handleApiResponse<postCreateResponse>(
+      response,
+      "Failed to create post",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to create post");
   }
-
-  return json.data as postCreateResponse;
 }
 
 export async function updatePostApi(
@@ -44,56 +70,62 @@ export async function updatePostApi(
   content: string,
   csrfToken?: string,
 ): Promise<postCreateResponse> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
-  }
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/posts/${id}`,
-    {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify({ content }),
-      credentials: "include",
-    },
-    10000,
-  );
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/posts/${id}`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ content }),
+        credentials: "include",
+      },
+      10000,
+    );
 
-  const json = (await response.json()) as {
-    data?: postCreateResponse;
-    error?: ErrorResponse;
-  };
-  if (!response.ok) {
-    throw new Error(json.error?.message || "Failed to update post");
+    return await handleApiResponse<postCreateResponse>(
+      response,
+      "Failed to update post",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to update post");
   }
-
-  return json.data as postCreateResponse;
 }
 
 export async function deletePostApi(
   id: string,
   csrfToken?: string,
 ): Promise<void> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  if (csrfToken) {
-    headers["X-CSRF-Token"] = csrfToken;
-  }
-  const response = await fetchWithAuth(
-    `${API_BASE_URL}/posts/${id}`,
-    {
-      method: "DELETE",
-      headers,
-      credentials: "include",
-    },
-    10000,
-  );
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/posts/${id}`,
+      {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      },
+      10000,
+    );
 
-  if (!response.ok) {
-    const json = (await response.json()) as { error?: ErrorResponse };
-    throw new Error(json.error?.message || "Failed to delete post");
+    await handleApiResponse<void>(response, "Failed to delete post");
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to delete post");
   }
 }

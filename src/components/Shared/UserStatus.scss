@@ -1,0 +1,87 @@
+@use "../../styles/variables" as vars;
+@use "sass:color";
+
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: rgba(79, 195, 247, 0.1);
+  border-radius: vars.$border-radius;
+  border: 1px solid rgba(79, 195, 247, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(79, 195, 247, 0.15);
+    border-color: rgba(79, 195, 247, 0.5);
+  }
+}
+
+.user-status-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-status-username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: vars.$color-text-main;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &.online {
+    color: #4caf50;
+    animation: pulse-online 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-online {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive: hide username on very small screens */
+@media (max-width: 480px) {
+  .user-status-username {
+    display: none;
+  }
+
+  .user-status {
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .user-status-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.8rem;
+  }
+}

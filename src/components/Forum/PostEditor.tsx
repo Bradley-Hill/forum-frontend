@@ -4,6 +4,7 @@ import { createPostApi } from "../../api/postApi";
 import Button from "../Shared/Button";
 import Alert from "../Shared/Alert";
 import Form from "../Shared/Form";
+import MarkdownEditor from "../Shared/MarkdownEditor";
 import type { postCreateRequest } from "../../types/api";
 import "./PostEditor.scss";
 
@@ -87,14 +88,11 @@ const PostEditor: React.FC<PostEditorProps> = ({ threadId, onPostCreated }) => {
       <Form onSubmit={handleSubmit} className="editor-form">
         <div className="form-group">
           <label htmlFor="content">Your Reply</label>
-          <textarea
-            id="content"
+          <MarkdownEditor
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={setContent}
             disabled={loading}
-            placeholder="Enter your post content here..."
-            rows={6}
-            className="editor-textarea"
+            showPreview={true}
           />
         </div>
         <div className="form-actions">

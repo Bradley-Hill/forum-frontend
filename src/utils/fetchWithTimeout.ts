@@ -1,3 +1,5 @@
+import { ApiError } from "./apiErrors";
+
 export async function fetchWithTimeout(
   url: string,
   options: RequestInit = {},
@@ -17,7 +19,9 @@ export async function fetchWithTimeout(
     clearTimeout(timeoutId);
 
     if (err instanceof Error && err.name === "AbortError") {
-      throw new Error(
+      throw new ApiError(
+        "GATEWAY_TIMEOUT",
+        "Server initializing. Please refresh the page in 30 seconds.",
         `Request timeout after ${timeoutMs}ms - server did not respond in time`,
       );
     }

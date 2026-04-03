@@ -1,0 +1,255 @@
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  font-size: 0.9rem;
+
+  &:hover:not(:disabled) {
+    background: #e9ecef;
+    border-color: #adb5bd;
+  }
+
+  &:active:not(:disabled) {
+    background: #dee2e6;
+    border-color: #868e96;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.preview-toggle {
+    width: auto;
+    padding: 0 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    &.active {
+      background: #007bff;
+      color: white;
+      border-color: #0056b3;
+    }
+  }
+
+  svg {
+    pointer-events: none;
+  }
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: #ddd;
+  margin: 0 0.25rem;
+}
+
+.editor-container {
+  display: flex;
+  flex: 1;
+  min-height: 400px;
+  overflow: hidden;
+
+  &.split {
+    gap: 1px;
+    background: #dee2e6;
+  }
+
+  &.full {
+    .editor-area {
+      flex: 1;
+    }
+  }
+}
+
+.editor-area {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.markdown-editor-textarea {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  background: #fff;
+
+  &:disabled {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+.preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fafbfc;
+  border-left: 1px solid #dee2e6;
+  overflow: hidden;
+}
+
+.preview-header {
+  padding: 0.75rem 1rem;
+  background: #f0f2f5;
+  border-bottom: 1px solid #dee2e6;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #495057;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+
+  // Reduce spacing in preview for more compact display
+  .markdown-display {
+    p {
+      margin: 0.25rem 0 0.5rem 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0.75rem 0 0.25rem 0;
+    }
+
+    ul, ol {
+      margin: 0.25rem 0 0.5rem 1.5rem;
+
+      li {
+        margin: 0.1rem 0;
+      }
+    }
+
+    code {
+      font-size: 0.85em;
+    }
+
+    pre {
+      margin: 0.5rem 0;
+      padding: 0.75rem;
+    }
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .markdown-editor {
+    .editor-container {
+      &.split {
+        flex-direction: column;
+        min-height: auto;
+        max-height: 600px;
+      }
+    }
+
+    .preview-area {
+      border-left: none;
+      border-top: 1px solid #dee2e6;
+      max-height: 300px;
+    }
+
+    .editor-toolbar {
+      gap: 0.25rem;
+    }
+
+    .toolbar-button {
+      width: 32px;
+      height: 32px;
+
+      &.preview-toggle {
+        flex: 1;
+        width: auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .markdown-editor {
+    .editor-toolbar {
+      padding: 0.5rem;
+    }
+
+    .toolbar-button {
+      width: 32px;
+      height: 32px;
+      font-size: 0.8rem;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .toolbar-divider {
+      display: none;
+    }
+
+    .preview-toggle {
+      display: none;
+    }
+
+    .editor-container {
+      min-height: 300px;
+
+      &.split {
+        max-height: 500px;
+      }
+    }
+
+    .preview-area {
+      max-height: 250px;
+    }
+
+    .markdown-editor-textarea {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .preview-content {
+      padding: 0.75rem;
+    }
+  }
+}
