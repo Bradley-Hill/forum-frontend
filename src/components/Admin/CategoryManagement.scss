@@ -45,7 +45,8 @@
     padding: 0.75rem 1rem;
     border-bottom: 1px solid vars.$color-border-light;
     color: vars.$color-text-main;
-    vertical-align: middle;
+    vertical-align: top;
+    height: 100%;
   }
 
   tr:last-child td {
@@ -67,6 +68,7 @@
   display: flex;
   gap: 0.5rem;
   white-space: nowrap;
+  align-items: center;
 }
 
 .category-form {
@@ -128,5 +130,35 @@
         flex-shrink: 0;
       }
     }
+  }
+}
+
+.category-reorder-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: #e8f4f8;
+  border: 1px solid #b8dfe8;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #1e7a96;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #cfe8f0;
+    border-color: #7fc5d9;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
   }
 }

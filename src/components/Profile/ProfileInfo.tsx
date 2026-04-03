@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { User } from "../../types/api";
+
 import type { ProfileInfoProps } from "../../types/featureComponents";
 import TextInput from "../Shared/TextInput";
 import Button from "../Shared/Button";

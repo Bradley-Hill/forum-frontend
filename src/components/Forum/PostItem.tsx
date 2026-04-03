@@ -49,9 +49,13 @@ const PostItem: React.FC<PostItemProps> = ({
       <div className="post-body">
         <div className="post-author-section">
           <div className="author-avatar">
-            <span className="avatar-placeholder">
-              {post.author.username.charAt(0).toUpperCase()}
-            </span>
+            {post.author.avatar_url ? (
+              <img src={post.author.avatar_url} alt={post.author.username} />
+            ) : (
+              <span className="avatar-placeholder">
+                {post.author.username.charAt(0).toUpperCase()}
+              </span>
+            )}
           </div>
           <div className="author-info">
             <Link

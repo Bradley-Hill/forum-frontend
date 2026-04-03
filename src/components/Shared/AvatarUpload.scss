@@ -1,0 +1,123 @@
+@import "../../styles/variables";
+
+.avatar-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 400px;
+}
+
+.avatar-upload-preview {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: $color-bg-disabled;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $color-border-light;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .placeholder {
+    color: $color-text-muted;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+.avatar-upload-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: $color-info;
+  color: $color-text-header-footer;
+  border-radius: $border-radius;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: $color-link-hover;
+  }
+
+  &:active {
+    background: darken($color-link-hover, 10%);
+  }
+}
+
+.input:disabled ~ .file-input-label {
+  background: $color-bg-disabled;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: $color-error;
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0.5rem;
+  background: lighten($color-error, 40%);
+  border-left: 3px solid $color-error;
+  border-radius: $border-radius;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.upload-button,
+.cancel-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: $border-radius;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upload-button {
+  background: $color-success;
+  color: $color-text-header-footer;
+  flex: 1;
+
+  &:hover:not(:disabled) {
+    background: darken($color-success, 5%);
+  }
+
+  &:disabled {
+    background: $color-bg-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-button {
+  background: $color-error;
+  color: $color-text-header-footer;
+  flex: 1;
+
+  &:hover:not(:disabled) {
+    background: darken($color-error, 5%);
+  }
+
+  &:disabled {
+    background: $color-bg-disabled;
+    cursor: not-allowed;
+  }
+}

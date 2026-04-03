@@ -93,6 +93,7 @@ export interface categoriesListResponse {
     slug: string;
     name: string;
     description: string;
+    position: number;
   }[];
 }
 
@@ -227,6 +228,7 @@ export interface User {
   username: string;
   email: string;
   role: "member" | "admin";
+  avatar_url?: string;
 }
 
 export interface Thread {
@@ -236,7 +238,7 @@ export interface Thread {
   is_locked: boolean;
   created_at: string;
   updated_at: string;
-  author: { id: string; username: string };
+  author: { id: string; username: string; avatar_url?: string };
   reply_count: number;
   category_id: string;
 }
@@ -244,7 +246,7 @@ export interface Thread {
 export interface Post {
   id: string;
   thread_id: string;
-  author: { id: string; username: string };
+  author: { id: string; username: string; avatar_url?: string };
   content: string;
   created_at: string;
   updated_at: string;

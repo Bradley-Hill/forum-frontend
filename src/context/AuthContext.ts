@@ -7,6 +7,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   csrfToken: null,
   loading: false,
+  loadingMessage: "",
   error: null,
   isInitialized: false,
   login: async (_username: string, _password: string) => {},

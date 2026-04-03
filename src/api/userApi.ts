@@ -167,3 +167,39 @@ export async function deleteUserApi(csrfToken?: string): Promise<void> {
     throw new ApiError("UNKNOWN_ERROR", "Failed to delete user");
   }
 }
+
+export async function uploadAvatarApi(
+  file: File,
+  csrfToken?: string,
+): Promise<{ avatar_url: string }> {
+  try {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    const headers: Record<string, string> = {};
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/users/me/avatar`,
+      {
+        method: "POST",
+        headers,
+        body: formData,
+        credentials: "include",
+      },
+      30000,
+    );
+
+    return await handleApiResponse<{ avatar_url: string }>(
+      response,
+      "Failed to upload avatar",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Failed to upload avatar");
+  }
+}

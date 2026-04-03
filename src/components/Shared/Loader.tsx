@@ -1,5 +1,5 @@
 import type { LoaderProps } from "../../types/sharedComponents";
-import React, { use } from "react";
+import React from "react";
 import "./Loader.scss";
 import { useAuth } from "../../hooks/useAuth";
 

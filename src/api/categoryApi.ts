@@ -137,6 +137,41 @@ export async function deleteCategoryApi(
   }
 }
 
+export async function updateCategoryPositionApi(
+  id: string,
+  position: number,
+  csrfToken?: string,
+): Promise<categoriesListResponse["data"]> {
+  try {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (csrfToken) {
+      headers["X-CSRF-Token"] = csrfToken;
+    }
+    const response = await fetchWithAuth(
+      `${API_BASE_URL}/categories/${id}/position`,
+      {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ position }),
+        credentials: "include",
+      },
+      10000,
+    );
+
+    return await handleApiResponse<categoriesListResponse["data"]>(
+      response,
+      "Category reorder failed",
+    );
+  } catch (err) {
+    if (err instanceof ApiError) {
+      throw err;
+    }
+    throw new ApiError("UNKNOWN_ERROR", "Category reorder failed");
+  }
+}
+
 export async function getCategoryThreadsApi(
   id: string,
   page?: number,

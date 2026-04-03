@@ -112,3 +112,9 @@ export interface MarkdownDisplayProps {
   content: string;
   className?: string;
 }
+
+export interface AvatarUploadProps {
+  currentAvatarUrl?: string;
+  onSuccess: (avatarUrl: string) => void;
+  onError?: (error: string) => void;
+}
