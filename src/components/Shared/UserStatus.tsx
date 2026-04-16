@@ -12,7 +12,16 @@ const UserStatus: React.FC<UserStatusProps> = () => {
   return (
     <div className="user-status">
       <div className="user-status-avatar">
-        {user.username.charAt(0).toUpperCase()}
+        {user.avatar_url ? (
+          <img
+            src={user.avatar_url}
+            alt={user.username + "'s avatar"}
+            className="user-status-avatar-img"
+            onError={e => (e.currentTarget.style.display = "none")}
+          />
+        ) : (
+          user.username.charAt(0).toUpperCase()
+        )}
       </div>
       <span className="user-status-username">{user.username}</span>
       <span className="user-status-badge online" title="Online">
