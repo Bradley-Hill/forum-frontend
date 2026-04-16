@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { uploadAvatarApi } from "../../api/userApi";
 import { useAuth } from "../../hooks/useAuth";
+import { resizeImage } from "../../utils/resizeImage";
 import type { AvatarUploadProps } from "../../types/sharedComponents";
 import "./AvatarUpload.scss";
 
@@ -10,12 +11,14 @@ export default function AvatarUpload({
   onError,
 }: AvatarUploadProps) {
   const { csrfToken } = useAuth();
-  const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
+  const [preview, setPreview] = useState<string | null>(
+    currentAvatarUrl || null,
+  );
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
@@ -35,14 +38,23 @@ export default function AvatarUpload({
       return;
     }
 
-    setFile(selectedFile);
-    setError(null);
+    try {
+      const resizedFile = await resizeImage(selectedFile);
+      setFile(resizedFile);
+      setError(null);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(resizedFile);
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to process image";
+      setError(errorMsg);
+      onError?.(errorMsg);
+      return;
+    }
   };
 
   const handleUpload = async () => {
