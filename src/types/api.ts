@@ -197,6 +197,7 @@ export interface getMeResponse {
     email: string;
     role: "member" | "admin";
     created_at: string;
+    avatar_url?: string;
   };
 }
 
