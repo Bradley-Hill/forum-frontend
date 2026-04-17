@@ -12,6 +12,11 @@ async function handleApiResponse<T>(
   response: Response,
   defaultMessage: string,
 ): Promise<T> {
+  // Handle 204 No Content - successful response with no body
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   const json = (await response.json()) as {
     data?: T;
     error?: ErrorResponse;
