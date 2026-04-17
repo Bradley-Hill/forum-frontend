@@ -66,6 +66,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setCsrfToken(null);
     } catch (err) {
+      // Always clear the user state on logout, even if API fails
+      setUser(null);
+      setCsrfToken(null);
       setError(getErrorMessage(err, "Logout failed"));
     } finally {
       setLoading(false);

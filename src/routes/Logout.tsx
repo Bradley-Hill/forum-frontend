@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import Modal from "../components/Shared/Modal";
@@ -9,12 +9,23 @@ import "./Logout.scss";
 
 function Logout() {
   const navigate = useNavigate();
-  const { logout, error } = useAuth();
+  const { logout, error, user } = useAuth();
   const [isConfirmOpen, _setIsConfirmOpen] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user === null && !isLoggingOut) {
+      const timer = setTimeout(() => {
+        navigate("/");
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [user, isLoggingOut, navigate]);
 
   const handleConfirmLogout = async () => {
     setIsLoggingOut(true);
+    setLocalError(null);
     try {
       await logout();
       setTimeout(() => {
@@ -22,6 +33,7 @@ function Logout() {
       }, 1500);
     } catch (err) {
       console.error("Logout error:", err);
+      setLocalError(err instanceof Error ? err.message : "Failed to logout");
       setIsLoggingOut(false);
     }
   };
@@ -32,6 +44,7 @@ function Logout() {
 
   const handleRetry = async () => {
     setIsLoggingOut(true);
+    setLocalError(null);
     try {
       await logout();
       setTimeout(() => {
@@ -39,6 +52,7 @@ function Logout() {
       }, 1500);
     } catch (err) {
       console.error("Logout error:", err);
+      setLocalError(err instanceof Error ? err.message : "Failed to logout");
       setIsLoggingOut(false);
     }
   };
@@ -52,12 +66,13 @@ function Logout() {
     );
   }
 
-  if (error) {
+  const displayError = localError || error;
+  if (displayError) {
     return (
       <div className="logout-container">
         <ErrorMessage
           message="Failed to log out"
-          details={error}
+          details={displayError}
           onRetry={handleRetry}
         />
       </div>
