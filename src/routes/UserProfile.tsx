@@ -51,7 +51,13 @@ const UserProfile: React.FC = () => {
   return (
     <div className="user-profile">
       <div className="user-profile__header">
-        <div className="user-profile__avatar">{user.username[0].toUpperCase()}</div>
+        <div className="user-profile__avatar">
+          {user.avatar_url ? (
+            <img src={user.avatar_url} alt={user.username} />
+          ) : (
+            user.username[0].toUpperCase()
+          )}
+        </div>
         <div className="user-profile__info">
           <h1 className="user-profile__username">{user.username}</h1>
           <div className="user-profile__meta">

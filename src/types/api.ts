@@ -207,6 +207,7 @@ export interface getUserResponse {
     username: string;
     role: "member" | "admin";
     created_at: string;
+    avatar_url?: string;
   };
 }
 
