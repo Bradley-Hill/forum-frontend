@@ -8,6 +8,11 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
   const { csrfToken } = useAuth();
 
   const handleReorderCategory = async (categoryId: string, newPosition: number) => {
+    if (typeof newPosition !== "number" || newPosition < 0) {
+      alert("Invalid position. Position must be a non-negative number.");
+      return;
+    }
+
     try {
       await updateCategoryPositionApi(categoryId, newPosition, csrfToken ?? undefined);
       window.location.reload();
@@ -25,6 +30,9 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
     );
   }
 
+  const sortedCategories = [...categories].sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+  const maxPosition = sortedCategories.length - 1;
+
   return (
     <table className="category-table">
       <thead>
@@ -36,9 +44,10 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
         </tr>
       </thead>
       <tbody>
-        {categories.map((cat, index) => {
-          const isFirst = index === 0;
-          const isLast = index === categories.length - 1;
+        {sortedCategories.map((cat) => {
+          const isFirst = cat.position === 0;
+          const isLast = cat.position === maxPosition;
+          const position = typeof cat.position === "number" ? cat.position : 0;
 
           return (
             <tr key={cat.id}>
@@ -51,7 +60,7 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
                 <div className="category-actions">
                   <button
                     disabled={isFirst}
-                    onClick={() => handleReorderCategory(cat.id, cat.position - 1)}
+                    onClick={() => handleReorderCategory(cat.id, position - 1)}
                     title="Move up"
                     aria-label={`Move ${cat.name} up`}
                     className="category-reorder-btn"
@@ -61,7 +70,7 @@ function CategoryTable({ categories, onEdit, onDelete }: CategoryTableProps) {
                   </button>
                   <button
                     disabled={isLast}
-                    onClick={() => handleReorderCategory(cat.id, cat.position + 1)}
+                    onClick={() => handleReorderCategory(cat.id, position + 1)}
                     title="Move down"
                     aria-label={`Move ${cat.name} down`}
                     className="category-reorder-btn"
